@@ -211,7 +211,7 @@ async function icon(Comp, color, size = 256) {
   text(s, "Hard deadline", { x: 7.05, y: 1.42, w: 2.3, h: 0.35, fontFace: THEME.headFontFace, fontSize: 18, bold: true, valign: "middle" });
   text(s, "2:00 PM", { x: 6.5, y: 2.05, w: 2.85, h: 0.75, fontFace: THEME.headFontFace, fontSize: 44, bold: true });
   text(s, "Woodland Park, CO. Leave Black Canyon by 8:15 AM to arrive around 1:00 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
-  text(s, "Lunch: leftover Buc-ee's jerky and Beaver Nuggets.", { x: 6.5, y: 4.1, w: 2.85, h: 0.7, fontSize: 12, italic: true });
+  text(s, "Lunch: leftovers. Then the rental goes back at Colorado Springs airport.", { x: 6.5, y: 4.1, w: 2.85, h: 0.7, fontSize: 12, italic: true });
 
   // ---------- Hikes ----------
   pres.addSection({ title: "Hikes & stops" });

@@ -59,7 +59,7 @@ const TRIP = {
       ],
       car: [
         "The PHX Sky Train to the Rental Car Center is free and runs 24 hours. The Rental Car Center is at 1805 E Sky Harbor Circle S.",
-        "At the counter, ask: (1) Are unpaved roads allowed? Monument Valley's Valley Drive is dirt, and many contracts ban it. (2) What's the one-way drop fee for Colorado Springs, and until what time can I return it?",
+        "At the counter, ask: (1) Are unpaved roads allowed? Monument Valley's Valley Drive is dirt, and many contracts ban it. (2) What's the one-way drop fee for Colorado Springs airport (COS), and when does the COS return lot close on Wednesday?",
         "Take photos of every panel and the windshield before you leave the lot. Check for a phone charger cable and a spare tire.",
         "Fuel plan: fill at Buc-ee's, Flagstaff, and Tusayan. Never go below half a tank between stops on this trip.",
         "Tusayan parking: confirm your host has a driveway or lot. No parking worries at Buc-ee's, the lot is huge.",
@@ -192,7 +192,7 @@ const TRIP = {
     },
     {
       id: "wed", day: "Wed", date: "Nov 11", title: "The Abyss & the Continental Divide",
-      route: "Ouray → Black Canyon → Monarch Pass → Woodland Park", drive: "~5.5 hrs · HOME BY 2 PM",
+      route: "Ouray → Black Canyon → Monarch Pass → Woodland Park → Colorado Springs airport (car back)", drive: "~5.5 hrs · HOME BY 2 PM, then the car to COS",
       color: "A8D8C9", ink: "2F7A66", art: "black",
       sleep: null,
       stops: [
@@ -211,6 +211,7 @@ const TRIP = {
         { t: "~12:30 PM", kind: "fun", name: "Wilkerson Pass → South Park", map: M("Wilkerson Pass Colorado"),
           desc: "Your first big view across South Park. A 5-minute pull-off, not a stop. Save Florissant Fossil Beds for another trip." },
         { t: "1:00 PM", kind: "home", star: true, name: "ARRIVE in Woodland Park 🎉", desc: "An hour of cushion before 2:00. Leftover Beaver Nuggets for the victory lap." },
+        { t: "2:30 PM", kind: "drive", name: "Return the rental at Colorado Springs airport (COS)", map: M("Colorado Springs Airport rental car return"), desc: "About 35 miles and 50 minutes east on US-24 from Woodland Park. If the car was picked up around 5:30 PM Sunday, the 24-hour clock runs out at 5:30 PM Wednesday, so a 3:00 PM drop avoids an extra day. Fill the tank first (Woodland Park or Falcon), take photos of the car, and have a ride back lined up." },
       ],
       food: [
         { meal: "Breakfast", a: "Pack it Tuesday evening from Ouray or Ridgway", b: "A breakfast burrito in Montrose (on the way)" },
@@ -224,7 +225,8 @@ const TRIP = {
         "Black Canyon: park at the visitor center lot. The Oak Flat trailhead is a short walk behind it. If the rim road is closed, you lose nothing.",
         "Monarch Pass: the summit lot has the Divide sign and a gift shop. Clean ice off the windshield before you climb.",
         "Fuel: Montrose or Gunnison, then Salida. Never under half a tank before the pass.",
-        "RETURNING THE CAR: Woodland Park is ~35 miles from Colorado Springs airport (about 45–50 min). Decide where the car goes back, and when, before you leave Phoenix.",
+        "RETURNING THE CAR: it goes back at Colorado Springs airport (COS), ~35 miles and 50 min east of Woodland Park on US-24. Plan: arrive Woodland Park by 1:00, then run the car to COS by ~3:00. Fill the tank before the drop and photograph the car.",
+        "Line up the ride back from COS to Woodland Park (a second driver following, or a rideshare) before Wednesday.",
       ],
       crowd: [
         "Black Canyon at 7:15 AM on a November Wednesday is basically private. Enjoy it.",
@@ -237,7 +239,7 @@ const TRIP = {
     "Tell the Tusayan host: arriving ~11 PM, need self check-in",
     "Join the rental company's free loyalty program (skip the counter at PHX)",
     "Rental: ask if unpaved roads are allowed, and confirm the one-way drop fee and return hours",
-    "Decide where the rental goes back (Colorado Springs airport is ~35 mi from Woodland Park)",
+    "Rental returns at Colorado Springs airport (COS) Wed afternoon, by 5:30 PM if picked up ~5:30 PM Sunday. Line up a ride back to Woodland Park",
     "America the Beautiful pass (Grand Canyon, Arches, Black Canyon)",
     "Credit card for the Monument Valley fee (~$10/person + $15/vehicle)",
     "Monday morning: call Monument Valley, 435-727-5874, to confirm winter hours",
