@@ -47,7 +47,7 @@
   .hello{text-align:center;margin-top:28px}
   .hello b{display:block;font-size:34px;letter-spacing:-.5px}
   .hello span{color:var(--muted);font-size:16px}
-  .taphint{margin:14px 0 0;font-weight:700;color:var(--day-ink,#3D3A4B)}
+  .taphint{margin:14px 0 0;font-weight:700;color:inherit}
   .skip{margin-top:18px;background:none;border:2px solid currentColor;color:var(--muted);border-radius:999px;padding:10px 18px;font:inherit;font-size:14px;font-weight:700;min-height:44px;cursor:pointer}
   .installhelp{margin:12px auto 0;max-width:420px;text-align:left;font-size:14px;line-height:1.5}
   .installhelp[hidden]{display:none}
@@ -271,7 +271,7 @@
     let s=Math.max(0,Math.floor((target-now)/1000));
     const d=Math.floor(s/86400); s%=86400; const h=Math.floor(s/3600); s%=3600; const m=Math.floor(s/60); s%=60;
     $("#count").innerHTML=[[d,"days"],[h,"hrs"],[m,"min"],[s,"sec"]].map(([n,l])=>`<div><b>${String(n).padStart(2,"0")}</b><span>${l}</span></div>`).join("");
-    $("#countlabel").textContent = now<start ? "until wheels up in Phoenix" : "until Woodland Park · Wed 2:00 PM";
+    $("#countlabel").textContent = now<start ? "until Mari lands in Phoenix (4:00 PM)" : "until Woodland Park · Wed 2:00 PM";
   }
   tick(); setInterval(tick,1000);
 
@@ -340,6 +340,7 @@
     }).join("");
     const food=`<div class="section-title">Where to eat</div><div class="card">${d.food.map(f=>`
       <div class="meal"><div class="m">${esc(f.meal)}</div><div class="o"><div><i>A</i><span>${esc(f.a)}</span></div><div><i>B</i><span>${esc(f.b)}</span></div></div></div>`).join("")}</div>`;
+    const crowd=d.crowd?`<div class="section-title">Dodging the crowds</div><div class="card"><ul class="heads">${d.crowd.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:"";
     const sleep=d.sleep?`<div class="section-title">Where to sleep · ${esc(d.sleep.town)}</div><div class="card">
       <p class="note">All three showed as available for 1 guest on Nov 7. Tap Copy, then paste the name into Airbnb search.</p>
       ${d.sleep.picks.map(p=>`<div class="bnb"><div class="n">“${esc(p.name)}”<small>${esc(p.note)}</small></div><button class="btn" type="button" data-copy="${esc(p.name)}">Copy</button></div>`).join("")}
@@ -349,7 +350,7 @@
         <div class="txt"><span class="pill">${d.day} · ${d.date} · 🚗 ${esc(d.drive)}</span>
         <h2>${esc(d.title)}</h2><p>${esc(d.route)}</p>
         <div class="meter"><div class="bar"><i style="width:${n?Math.round(c/n*100):0}%"></i></div><span>${c}/${n} stops</span></div></div></section>
-      <div class="tl">${stops}</div>${food}${sleep}</div>`;
+      <div class="tl">${stops}</div>${food}${crowd}${sleep}</div>`;
   }
 
   function pack(){

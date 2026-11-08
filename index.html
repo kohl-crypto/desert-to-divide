@@ -47,7 +47,7 @@
   .hello{text-align:center;margin-top:28px}
   .hello b{display:block;font-size:34px;letter-spacing:-.5px}
   .hello span{color:var(--muted);font-size:16px}
-  .taphint{margin:14px 0 0;font-weight:700;color:var(--day-ink,#3D3A4B)}
+  .taphint{margin:14px 0 0;font-weight:700;color:inherit}
   .skip{margin-top:18px;background:none;border:2px solid currentColor;color:var(--muted);border-radius:999px;padding:10px 18px;font:inherit;font-size:14px;font-weight:700;min-height:44px;cursor:pointer}
   .installhelp{margin:12px auto 0;max-width:420px;text-align:left;font-size:14px;line-height:1.5}
   .installhelp[hidden]{display:none}
@@ -219,54 +219,59 @@ const TRIP = {
   subtitle: "Phoenix → Grand Canyon → Monument Valley → Arches → Ouray → Black Canyon → Woodland Park",
   dates: "Nov 8–11, 2026",
   finish: "2026-11-11T14:00:00-07:00",
-  start: "2026-11-08T08:00:00-07:00",
+  start: "2026-11-08T16:00:00-07:00",
   stats: [
     { n: "4", l: "days" },
-    { n: "~1,000", l: "miles" },
+    { n: "~1,350", l: "miles" },
     { n: "4", l: "epic hikes" },
     { n: "1", l: "Buc-ee's" },
   ],
   days: [
     {
-      id: "sun", day: "Sun", date: "Nov 8", title: "Brisket & the Big Ditch",
-      route: "Phoenix → Buc-ee's → Grand Canyon", drive: "~4.5 hrs",
+      id: "sun", day: "Sun", date: "Nov 8", title: "Land, Brisket & the Night Run North",
+      route: "Phoenix (land 4 PM) → Buc-ee's → Flagstaff → Grand Canyon", drive: "~4.5 hrs, half of it after dark",
       color: "F7B89A", ink: "B4532F", art: "canyon",
       sleep: {
         town: "Grand Canyon / Tusayan",
         url: "https://www.airbnb.com/s/Tusayan--AZ/homes?checkin=2026-11-08&checkout=2026-11-09&adults=1",
         picks: [
-          { name: "20-acre B&B with breakfast and fireplace", note: "4.9★ (686) · ~$195 · TOP PICK, closest to the shuttle" },
-          { name: "Off-grid stargazing with a private fire pit", note: "Tiny home · 4.95★ (179) · ~$228" },
+          { name: "20-acre B&B with breakfast and fireplace", note: "4.9★ (686) · ~$195 · TOP PICK, closest to the shuttle · confirm the host is fine with a ~10:30 PM check-in" },
+          { name: "Off-grid stargazing with a private fire pit", note: "Tiny home · 4.95★ (179) · ~$228 · self check-in is easiest for a late arrival" },
           { name: "Glass roof stargazing with mountain views", note: "Camper · 4.79★ (297) · ~$61 · half-bath only" },
         ],
       },
       stops: [
-        { t: "Land", kind: "drive", name: "Phoenix Sky Harbor (PHX)", desc: "Pick up the rental car. Land by about 11 AM to make the canyon sunset." },
-        { t: "+25 min", kind: "fun", star: true, name: "BUC-EE'S Goodyear", map: M("Buc-ee's 1001 N Bullard Ave Goodyear AZ"), url: "https://buc-ees.com",
-          desc: "Arizona's first Buc-ee's: 120 gas pumps, open 24/7. THIS HAS TO BE SEEN.",
+        { t: "4:00 PM", kind: "drive", name: "Land at Phoenix Sky Harbor (PHX)", map: M("Phoenix Sky Harbor Rental Car Center"),
+          desc: "Carry-on only if you can. Follow the signs to the Rental Car Center. Join the rental company's free loyalty program in its app tonight so you can walk past the counter. Target: wheels rolling by 5:00." },
+        { t: "5:00 PM", kind: "drive", name: "Drive west to Goodyear", desc: "About 35 minutes on I-10 West. Sunset is 5:30, so you'll arrive at Buc-ee's in the last light." },
+        { t: "5:40 PM", kind: "fun", star: true, name: "BUC-EE'S Goodyear (dinner!)", map: M("Buc-ee's 1001 N Bullard Ave Goodyear AZ"), url: "https://buc-ees.com",
+          desc: "Arizona's first Buc-ee's (opened June 22, 2026): 120 gas pumps, open 24/7. Sunday evening is the busy hour, so do the brisket line FIRST and shop while it's still fresh. THIS HAS TO BE SEEN.",
           list: [
-            "Get a CHOPPED BRISKET sandwich at the carving station in the middle of the store",
+            "Get a CHOPPED BRISKET sandwich at the carving station in the middle of the store. That's dinner.",
             "When they yell \"FRESH BRISKET ON THE BOARD!\" → you make the TURKEY NOISE. Gobble gobble. Commit.",
-            "Beaver Nuggets, a slab of fudge, a kolache, and something off the jerky wall",
-            "Selfie with the giant Buc-ee the Beaver statue",
-            "Visit the famous bathrooms. Gas up (pay at the pump)",
+            "Buy tomorrow's breakfast now: kolaches and a coffee. Nothing in Tusayan opens before 6 AM.",
+            "Beaver Nuggets, a slab of fudge, and something off the jerky wall",
+            "Selfie with the giant Buc-ee the Beaver statue, then the famous bathrooms",
+            "Gas up (pay at the pump). Fill all the way.",
           ], gobble: true },
-        { t: "+1 hr", kind: "fun", name: "Rock Springs Café (I-17 exit 242)", map: M("Rock Springs Cafe Black Canyon City AZ"),
-          desc: "A 1918 roadhouse famous for pie. Get the Jack Daniel's pecan pie and take a slice for the road. Alternative: Sunset Point Rest Area (~mile 252) for the desert overlook." },
-        { t: "Optional", kind: "fun", name: "Montezuma Castle NM (exit 289)", map: M("Montezuma Castle National Monument"), url: "https://www.nps.gov/moca",
-          desc: "An 800-year-old cliff dwelling about 5 min off I-17. The loop walk takes 30 min. Only if you're ahead of schedule." },
-        { t: "+2 hrs", kind: "drive", name: "Flagstaff → US-180", desc: "Coffee and gas in Flagstaff, then about 1.5 hrs through the pines to the South Rim." },
-        { t: "5:15 PM", kind: "hike", star: true, name: "Sunset at the South Rim", map: M("Mather Point Grand Canyon"), url: "https://www.nps.gov/grca",
-          desc: "Option A: Mather Point (easiest). Option B: walk west on the Rim Trail to Yavapai Point / the Trail of Time (fewer people)." },
+        { t: "6:45 PM", kind: "drive", name: "Goodyear → Loop 303 → I-17 North", desc: "About 2 hrs to Flagstaff. It's dark by 6, so this part is all highway and easy. Cruise control, podcast, snacks." },
+        { t: "~9:00 PM", kind: "drive", name: "Flagstaff: last gas, last coffee", map: M("Flagstaff AZ gas station"), desc: "Top off the tank and stretch. After this it's 80 miles of two-lane pine forest with no services." },
+        { t: "~10:30 PM", kind: "drive", star: true, name: "US-180 → AZ-64 → Tusayan (ELK ALERT)", map: M("Tusayan AZ"),
+          desc: "Elk and deer cross this road at night. Keep to 45–50 mph, use high beams when it's empty, and watch the shoulders for glowing eyes. If you're yawning at Flagstaff, STOP: book a Flagstaff room instead (cheaper) and skip the sunrise hike tomorrow." },
+        { t: "~10:30 PM", kind: "home", name: "Check in, then sleep", desc: "Set two alarms for 5:15 AM. You need that first shuttle at 6:00." },
       ],
       food: [
-        { meal: "Lunch", a: "Buc-ee's chopped brisket sandwich (obviously)", b: "Rock Springs Café: pie counts as lunch" },
-        { meal: "Dinner", a: "El Tovar Dining Room (reservation required; 928-638-2631)", b: "El Tovar Lounge (no reservation) or a casual spot in Tusayan" },
+        { meal: "Dinner", a: "Buc-ee's chopped brisket sandwich (obviously)", b: "Buc-ee's smoked turkey or brisket Frito pie" },
+        { meal: "Monday breakfast", a: "Buc-ee's kolaches + coffee, bought tonight", b: "Granola bars from your pack, plus gas-station coffee in Flagstaff" },
+      ],
+      crowd: [
+        "Dodge the Sunday-evening Buc-ee's crush: order the brisket FIRST while the line is short, and shop after you eat.",
+        "No sunset stop tonight. The canyon rims are packed at dusk and you'd arrive in the dark anyway. You get the quiet version tomorrow at sunrise.",
       ],
     },
     {
-      id: "mon", day: "Mon", date: "Nov 9", title: "Canyons, Code Talkers & Valley of the Gods",
-      route: "Grand Canyon → Monument Valley → Moab", drive: "~6.5 hrs (the long, epic day)",
+      id: "mon", day: "Mon", date: "Nov 9", title: "Canyon Sunrise, Code Talkers & the Valley",
+      route: "Grand Canyon → Desert View → Cameron → Kayenta → Monument Valley → Moab", drive: "~7 hrs (the long, epic day)",
       color: "F2A7B8", ink: "A63D5E", art: "monument",
       sleep: {
         town: "Moab",
@@ -278,41 +283,47 @@ const TRIP = {
         ],
       },
       stops: [
-        { t: "6:00 AM", kind: "drive", name: "First orange shuttle → South Kaibab Trailhead", desc: "Park at the Visitor Center by 5:45. Cars aren't allowed at the trailhead. It's a 9-min ride." },
-        { t: "6:15 AM", kind: "hike", star: true, name: "HIKE 1: South Kaibab Trail at sunrise", map: M("South Kaibab Trailhead"), url: "https://www.nps.gov/grca",
-          desc: "Steep switchbacks right off the rim. Within 15 minutes the whole canyon opens up and turns orange as the sun rises (around 6:45).",
+        { t: "5:15 AM", kind: "drive", name: "Wake up, eat the kolaches", desc: "Sunrise is 6:59. Dress in layers: it's in the 20s on the rim." },
+        { t: "5:45 AM", kind: "drive", name: "Park at the Visitor Center, catch the first orange shuttle", desc: "The Kaibab Rim (orange) route's first bus has been 6:00 AM on the fall and winter schedules. Check the NPS shuttle page tonight for the 2026–27 winter times. Cars aren't allowed at the South Kaibab trailhead. It's a 9-min ride." },
+        { t: "6:20 AM", kind: "hike", star: true, name: "HIKE 1: South Kaibab Trail at sunrise", map: M("South Kaibab Trailhead"), url: "https://www.nps.gov/grca",
+          desc: "Steep switchbacks right off the rim. Within 15 minutes the whole canyon opens up and turns orange. Sunrise is 6:59, so be at Ooh Aah Point by 6:50. Mule trips don't start until later, so you'll nearly have it to yourself.",
           options: [
             "A (the plan): Ooh Aah Point. 1.8 mi round trip, 600 ft down, about 1.5 hrs",
-            "B (strong and fast): Cedar Ridge. 3 mi round trip, 1,100 ft down, about 2.5 hrs",
+            "B (strong and fast): Cedar Ridge. 3 mi round trip, 1,100 ft down, about 2.5 hrs. Only if you're back at the car by 9:00.",
             "C (easy): the flat Rim Trail to Pipe Creek Vista, then take the shuttle back",
           ] },
-        { t: "9:15 AM", kind: "fun", name: "Desert View Watchtower", map: M("Desert View Watchtower"), desc: "A 1932 stone tower designed by Mary Colter, with views down to the Colorado River. Drive Desert View Drive to get there; it's 25 miles of viewpoints." },
-        { t: "10:00 AM", kind: "food", name: "Cameron Trading Post", map: M("Cameron Trading Post AZ"), desc: "A 1916 trading post. Navajo taco breakfast, plus a great old shop." },
-        { t: "11:45 AM", kind: "fun", name: "Kayenta Burger King: Navajo Code Talkers exhibit", map: M("Burger King Kayenta AZ"),
-          desc: "Quirky and genuinely moving: a free WWII Code Talkers exhibit inside a Burger King, created by a Code Talker's son. There's often a Navajo taco stand out front." },
-        { t: "1:00 PM", kind: "hike", star: true, name: "HIKE 2: Monument Valley", map: M("Monument Valley Visitor Center"),
-          desc: "Walk the red sand valley floor right around the base of West Mitten Butte. Tribal park: its own entry fee, credit card only.",
+        { t: "8:30 AM", kind: "drive", name: "Back at the car, then go", desc: "Hard deadline: wheels rolling by 8:45. Gas in Tusayan if you're under 3/4 tank (the next fill is Cameron, then Kayenta)." },
+        { t: "9:30 AM", kind: "fun", name: "Desert View Watchtower (20 min only)", map: M("Desert View Watchtower"), desc: "A 1932 stone tower designed by Mary Colter. Drive East Rim Drive instead of backtracking through Tusayan. Skip it if you left the canyon after 8:45." },
+        { t: "10:45 AM", kind: "food", name: "Cameron Trading Post (brunch, 35 min)", map: M("Cameron Trading Post AZ"), desc: "A 1916 trading post. Navajo taco, then a quick walk through the shop. Gas up too. Leave by 11:20." },
+        { t: "1:15 PM", kind: "fun", name: "Kayenta: gas + Burger King Code Talkers exhibit", map: M("Burger King Kayenta AZ"),
+          desc: "Quirky and genuinely moving: a free WWII Navajo Code Talkers exhibit inside a Burger King, created by a Code Talker's son. RULE: if you're not through Kayenta by 1:15, skip the exhibit and go straight to the park." },
+        { t: "1:45 PM", kind: "hike", star: true, name: "HIKE 2: Monument Valley", map: M("Monument Valley Visitor Center"), url: "https://navajonationparks.org/tribal-parks/monument-valley/",
+          desc: "Winter hours: the Valley Drive's LAST ENTRY IS 2:30 PM and the park closes at 5:00. Entry is about $10 per person plus a $15 vehicle fee, so bring a card. Arriving after lunch is the crowd trick: the guided-jeep wave clears out by 1:00.",
           options: [
-            "A (the plan): Wildcat Trail. ~4 mi, ~2 hrs, the only trail you can hike without a guide. Sign in at the visitor center.",
-            "B: Drive the 17-mile Valley Drive (dirt road). Stop at John Ford's Point and the Three Sisters.",
+            "A (the plan): Drive the 17-mile Valley Drive (dirt, fine in a regular car when dry). Stop at John Ford's Point and the Three Sisters, and walk the short overlooks. About 2 hrs, done by 4:15.",
+            "B (running late): Wildcat Trail. 1.5 mi loop around West Mitten Butte, the only trail you can hike without a guide. Sign in and out at the visitor center.",
             "C: A Navajo-guided jeep tour, 1.5–2.5 hrs, booked at the visitor center",
           ] },
-        { t: "3:30 PM", kind: "fun", name: "Forrest Gump Point + Mexican Hat Rock", map: M("Forrest Gump Point US-163"),
-          desc: "Stand in the middle of US-163 with the buttes behind you for THE photo (watch for traffic). Then the giant balanced sombrero rock." },
-        { t: "3:45 PM", kind: "fun", name: "Goosenecks State Park", map: M("Goosenecks State Park Utah"), desc: "A 1,000-ft-deep overlook of the San Juan River snaking back and forth. It's a 5-min detour." },
-        { t: "4:00 PM", kind: "fun", star: true, name: "Valley of the Gods loop", map: M("Valley of the Gods Utah"), desc: "A 17-mile dirt loop, fine for a normal car when dry. Like a private Monument Valley at golden hour." },
-        { t: "5:00 PM", kind: "fun", star: true, name: "Moki Dugway → Muley Point sunset", map: M("Muley Point Overlook Utah"),
-          desc: "Three miles of gravel switchbacks up a cliff. At the top, turn left and go 5 mi to Muley Point for an insane sunset. Then paved roads to Moab, about 2.5 hrs." },
+        { t: "4:30 PM", kind: "fun", star: true, name: "Forrest Gump Point + Mexican Hat Rock", map: M("Forrest Gump Point US-163"),
+          desc: "22 miles north of the park, perfect low sun at about 4:55. Stand on the shoulder with the buttes behind you for THE photo (watch for traffic: stay off the road). Sunset is 5:16. Then the giant balanced sombrero rock in Mexican Hat." },
+        { t: "5:30 PM", kind: "drive", name: "Drive to Moab (about 2 hrs 20 min)", desc: "US-163 → Bluff → Blanding → Monticello → Moab. It's dark and the road is plain, but deer are out at dusk. Gas in Bluff or Monticello if you're under half." },
+        { t: "~7:50 PM", kind: "home", name: "Check in to Moab", desc: "Dump the bags, then dinner. Antica Forma is open until 9." },
       ],
       food: [
-        { meal: "Breakfast", a: "Cameron Trading Post: Navajo taco", b: "Grab-and-go in Tusayan before the hike" },
-        { meal: "Lunch", a: "The View Restaurant (window wall facing the Mittens)", b: "Goulding's Stagecoach Dining Room: Navajo taco" },
-        { meal: "Dinner (~7:45)", a: "Antica Forma: wood-fired pizza (get the pistachio), open until 9", b: "Desert Bistro: elk and bacon-wrapped dates (reserve)" },
+        { meal: "Breakfast", a: "Buc-ee's kolaches from last night", b: "Cameron Trading Post at 10:45 doubles as brunch" },
+        { meal: "Lunch (grab)", a: "Navajo taco from Cameron, eaten in the car", b: "Burger King in Kayenta (the exhibit is the point)" },
+        { meal: "Dinner (~8:00)", a: "Antica Forma: wood-fired pizza (get the pistachio), open until 9", b: "Desert Bistro: elk and bacon-wrapped dates (reserve, and ask the last seating)" },
+      ],
+      crowd: [
+        "Skip Mather Point and the Village. The tour buses arrive 9 AM–3 PM; at 6 AM on South Kaibab you'll have switchbacks to yourself.",
+        "Monument Valley after 1:45 PM is the quiet shift: tour vans do their loops 10–1 and the light gets better as they leave.",
+        "Forrest Gump Point is a sunrise/late-day zoo in summer. In November at 4:55 PM it's usually a handful of cars.",
+        "Cut on purpose: Valley of the Gods and the Moki Dugway. Gravel switchbacks after dark are not worth it. Save them for a daylight trip.",
       ],
     },
     {
-      id: "tue", day: "Tue", date: "Nov 10", title: "Arches, Oddities & the Million Dollar Highway",
-      route: "Arches → Hole N\" The Rock → Telluride → Ouray", drive: "~4.5 hrs",
+      id: "tue", day: "Tue", date: "Nov 10", title: "Arches Sunrise, Oddities & the Million Dollar Highway",
+      route: "Arches → Hole N\" The Rock → Telluride → Ouray", drive: "~5 hrs",
       color: "C3B1E1", ink: "6A4FA3", art: "arch",
       sleep: {
         town: "Ouray",
@@ -324,29 +335,37 @@ const TRIP = {
         ],
       },
       stops: [
-        { t: "6:00 AM", kind: "hike", star: true, name: "HIKE 3: Delicate Arch at sunrise", map: M("Delicate Arch Trailhead"), url: "https://www.nps.gov/arch",
-          desc: "Start by headlamp, climb a big slickrock slab, walk a ledge carved into a cliff, turn the corner, and there it is, glowing red with the snowy La Sal Mountains behind it. Sunrise is around 6:55. No reservation needed in 2026.",
+        { t: "5:15 AM", kind: "drive", name: "Leave Moab for Arches", desc: "The entrance is 5 minutes from town, and the Delicate Arch trailhead is 25 minutes inside. No timed entry is needed in 2026. Bring your pass." },
+        { t: "5:45 AM", kind: "hike", star: true, name: "HIKE 3: Delicate Arch at sunrise", map: M("Delicate Arch Trailhead"), url: "https://www.nps.gov/arch",
+          desc: "Start by headlamp, climb a big slickrock slab, walk a ledge carved into a cliff, turn the corner, and there it is. Sunrise is 6:55. Reality check: at sunrise the arch is a silhouette against the snowy La Sal Mountains, with it lighting up a few minutes after the sun clears the ridge. The famous full red glow is a sunset thing. Be at the bowl by 6:30 to claim a spot.",
           options: [
             "A (the plan): Delicate Arch. 3 mi round trip, about 500 ft up, 2–2.5 hrs",
             "B: Devils Garden to Landscape Arch. 1.6 mi round trip, flat. Extend to Double O Arch (4 mi round trip)",
             "C (add-on): The Windows and Double Arch, 30–45 min of short walks",
           ] },
-        { t: "9:30 AM", kind: "food", name: "Breakfast in Moab", desc: "Jailhouse Cafe (in the old county jail) or Cactus Jack's." },
+        { t: "8:30 AM", kind: "fun", name: "Wolfe Ranch petroglyphs, then The Windows + Double Arch", map: M("The Windows Section Arches National Park"), desc: "Walk the 100-yard spur to the Ute petroglyph panel at the trailhead. Then The Windows section: morning sun lights the arch faces, and you'll beat the tour groups by an hour." },
+        { t: "9:45 AM", kind: "food", name: "Breakfast in Moab", desc: "Jailhouse Cafe (in the old county jail) or Cactus Jack's. Check out of the Airbnb on your way." },
         { t: "10:30 AM", kind: "fun", star: true, name: "Hole N\" The Rock", map: M("Hole N The Rock Moab"), url: "https://theholeintherock.com",
-          desc: "A 14-room, 5,000 sq ft house a couple spent 12 years blasting out of a sandstone cliff. 1950s kitsch, a two-story outhouse, and a camel. Open daily 9–5." },
-        { t: "10:50 AM", kind: "fun", name: "Wilson Arch", map: M("Wilson Arch Utah"), desc: "A huge arch right next to US-191. You can scramble up into it in 5 minutes." },
-        { t: "11:00 AM", kind: "drive", name: "La Sal → Paradox Valley → Hwy 145", desc: "Remote red-cliff cowboy country, then up the San Miguel River to Telluride." },
-        { t: "1:45 PM", kind: "food", name: "Telluride", map: M("Telluride Colorado"), desc: "Lunch, then walk Main Street. Look for Bridal Veil Falls at the end of the box canyon. It's off-season, so call ahead." },
-        { t: "2:45 PM", kind: "fun", name: "Dallas Divide overlook", map: M("Dallas Divide Overlook Colorado"), desc: "One of the most photographed views in Colorado: the Mount Sneffels range." },
-        { t: "3:40 PM", kind: "fun", star: true, name: "Million Dollar Highway → Red Mountain Pass", map: M("Bear Creek Falls Overlook Ouray"),
-          desc: "No guardrails, so drive it in daylight. Bear Creek Falls (a waterfall right under the bridge), red iron-stained peaks, and mine ruins at 11,018 ft. Optional: Box Canyon Falls in Ouray." },
-        { t: "5:30 PM", kind: "fun", name: "Hot springs soak", map: M("Wiesbaden Hot Springs Ouray"),
+          desc: "A 14-room, 5,000 sq ft house a couple spent 12 years blasting out of a sandstone cliff. 1950s kitsch, a two-story outhouse, and a camel. Listed hours vary from 9–4 to 9–5, so call 435-686-2250 to confirm. It's 12 miles south of Moab." },
+        { t: "11:00 AM", kind: "fun", name: "Wilson Arch", map: M("Wilson Arch Utah"), desc: "A huge arch right next to US-191. You can scramble up into it in 5 minutes. Leave by 11:15." },
+        { t: "11:20 AM", kind: "drive", name: "La Sal → Paradox Valley → Hwy 145", desc: "Remote red-cliff cowboy country, then up the San Miguel River to Telluride. No crowds, no traffic. Gas up first." },
+        { t: "2:15 PM", kind: "food", name: "Telluride (45 min, tops)", map: M("Telluride Colorado"), desc: "Lunch, then a quick walk down Main Street. Bridal Veil Falls sits at the end of the box canyon. It's off-season, so call ahead." },
+        { t: "3:50 PM", kind: "fun", name: "Dallas Divide overlook", map: M("Dallas Divide Overlook Colorado"), desc: "One of the most photographed views in Colorado: the Mount Sneffels range, in low afternoon light." },
+        { t: "4:30 PM", kind: "fun", star: true, name: "Ouray, then Bear Creek Falls (out and back)", map: M("Bear Creek Falls Overlook Ouray"),
+          desc: "Drop your bags, then drive 2.5 miles south on the Million Dollar Highway to Bear Creek Falls: a waterfall right under the bridge, with red iron-stained cliffs. No guardrails, so be back before dark. Skip Red Mountain Pass tonight: it's 10 miles out and the sun sets at 5:03." },
+        { t: "5:45 PM", kind: "fun", name: "Hot springs soak", map: M("Wiesbaden Hot Springs Ouray"),
           desc: "⚠ The Ouray Hot Springs Pool is CLOSED Tue Nov 10. Go to the Wiesbaden vapor cave (call ahead), Twin Peaks, or Orvis in Ridgway (clothing-optional) instead." },
       ],
       food: [
         { meal: "Breakfast", a: "Jailhouse Cafe", b: "Cactus Jack's" },
         { meal: "Lunch (Telluride)", a: "Brown Dog Pizza (Detroit-style legend)", b: "Steamies Burger Bar" },
         { meal: "Dinner (Ouray)", a: "Ouray Brewery: rooftop views", b: "Bon Ton: historic Italian (call ahead)" },
+      ],
+      crowd: [
+        "Beat the Delicate Arch crowd by hiking in the dark: you'll be seated before the 6:30 wave and gone before the 8 AM families.",
+        "Do The Windows at 8:30 AM, not noon. That's when the buses and rental vans fill the parking lot.",
+        "The La Sal and Paradox Valley drive is nearly empty. It's the 'secret route' to Telluride that most tourists skip.",
+        "Telluride and Ouray are in their quiet off-season, so you walk straight into restaurants. Call ahead only to confirm they're open.",
       ],
     },
     {
@@ -357,46 +376,59 @@ const TRIP = {
       stops: [
         { t: "6:15 AM", kind: "drive", name: "Leave Ouray", desc: "Coffee and breakfast to go from the Ouray Ice House (opens at 6)." },
         { t: "7:30 AM", kind: "hike", star: true, name: "HIKE 4: Black Canyon of the Gunnison", map: M("Black Canyon of the Gunnison South Rim Visitor Center"), url: "https://www.nps.gov/blca",
-          desc: "A canyon so deep and narrow that sunlight barely reaches the bottom, with 2,000-ft walls straight down to a roaring river. The South Rim Road was open as of Nov 5, but snow can close it.",
+          desc: "A canyon so deep and narrow that sunlight barely reaches the bottom, with 2,000-ft walls straight down to a roaring river. The South Rim Road normally closes to cars after the first big snow, around mid-November, so the plan starts on foot from the visitor center and works either way. Check nps.gov/blca (conditions) or call 970-641-2337 Tuesday night.",
           options: [
-            "A (the plan): Drive the rim road to Chasm View and Painted Wall (each under 0.5 mi round trip)",
-            "B: Oak Flat Loop. 2 mi, drops below the rim, steep in spots, about 1 hr",
+            "A (the plan): Gunnison Point (2 min from the visitor center), then the Oak Flat Loop. 2 mi, drops below the rim, steep in spots, about 1 hr",
+            "B (if the road is open): Drive the rim road to Chasm View and Painted Wall (each under 0.5 mi round trip)",
             "C (short on time): Gunnison Point plus the Rim Rock Trail, 15 min",
           ] },
-        { t: "9:00 AM", kind: "drive", name: "Blue Mesa → Gunnison → Monarch Pass", map: M("Monarch Pass Colorado"),
-          desc: "Dillon Pinnacles along Blue Mesa, then the Continental Divide sign selfie at 11,312 ft." },
-        { t: "11:30 AM", kind: "fun", name: "Wilkerson Pass → South Park", map: M("Wilkerson Pass Colorado"),
-          desc: "Your first big view across South Park. Bonus if you're early: Florissant Fossil Beds (petrified redwood stumps), 30 min." },
-        { t: "1:15 PM", kind: "home", star: true, name: "ARRIVE in Woodland Park 🎉", desc: "Leftover Beaver Nuggets for the victory lap." },
+        { t: "8:30 AM", kind: "drive", star: true, name: "LEAVE the canyon, no matter what", desc: "This is the hard deadline that protects the 2 PM finish. If you're behind, take Option C." },
+        { t: "10:30 AM", kind: "drive", name: "Blue Mesa → Gunnison → Monarch Pass", map: M("Monarch Pass Colorado"),
+          desc: "Dillon Pinnacles along Blue Mesa, gas in Gunnison, then the Continental Divide sign selfie at 11,312 ft. Check road conditions for Monarch Pass the night before; it's the only snow-risk spot of the day." },
+        { t: "~12:45 PM", kind: "fun", name: "Wilkerson Pass → South Park", map: M("Wilkerson Pass Colorado"),
+          desc: "Your first big view across South Park. A 5-minute pull-off, not a stop. Save Florissant Fossil Beds for another trip." },
+        { t: "1:15 PM", kind: "home", star: true, name: "ARRIVE in Woodland Park 🎉", desc: "45 minutes of cushion before 2:00. Leftover Beaver Nuggets for the victory lap." },
       ],
       food: [
         { meal: "Breakfast", a: "Ouray Ice House (opens 6 AM)", b: "A breakfast burrito in Montrose" },
-        { meal: "Lunch", a: "Leftover Buc-ee's jerky and Beaver Nuggets", b: "Something quick in Gunnison (~10:15)" },
+        { meal: "Lunch", a: "Leftover Buc-ee's jerky and Beaver Nuggets", b: "Something quick in Gunnison (~9:45) or Salida" },
+      ],
+      crowd: [
+        "Black Canyon at 7:30 AM on a November Wednesday is basically private. Enjoy it.",
+        "Monarch Pass and US-285 are quiet midweek, with mostly trucks. Your only real risk is weather, not people.",
       ],
     },
   ],
   checklist: [
-    "Book the 3 Airbnbs (and El Tovar dinner)",
+    "Book the 3 Airbnbs (Tusayan, Moab, Ouray)",
+    "Tell the Tusayan host: arriving ~10:30 PM, need self check-in",
+    "Join the rental company's free loyalty program (skip the counter at PHX)",
+    "Check the rental's one-way drop fee",
     "America the Beautiful pass (Grand Canyon, Arches, Black Canyon)",
-    "Credit card for the Monument Valley fee",
-    "Headlamp",
+    "Credit card for the Monument Valley fee (~$10/person + $15/vehicle)",
+    "Monday morning: call Monument Valley, 435-727-5874, to confirm winter hours",
+    "Check the NPS Grand Canyon shuttle page for the winter schedule",
+    "Check Black Canyon and Monarch Pass road conditions Tuesday night",
+    "Headlamp (Mon and Tue are both pre-dawn)",
     "Microspikes / traction",
     "Puffy jacket, gloves, beanie",
     "2 liters of water + snacks",
     "Sunscreen + sunglasses",
     "Phone charger / power bank",
-    "Offline Google Maps downloaded",
+    "Offline Google Maps downloaded (no signal on the Navajo Nation or in Paradox Valley)",
     "Swimsuit (hot springs!)",
-    "Check the rental's one-way drop fee",
   ],
   heads: [
+    "Landing at 4 PM means tonight's drive is mostly in the dark. Elk on US-180 and AZ-64 are the real hazard. Slow down, or sleep in Flagstaff and skip the sunrise hike.",
+    "Time zones: DST ended Nov 1, so Arizona, the Navajo Nation, Utah and Colorado are all on the same clock this week.",
+    "Grand Canyon: first orange shuttle to South Kaibab is 6:00 AM (confirm on the NPS winter schedule)",
+    "Monument Valley: Valley Drive's last entry is 2:30 PM and the park closes at 5:00 in winter. Be through Kayenta by 1:15.",
     "Arches: no timed entry in 2026. Just drive in.",
-    "Grand Canyon: first shuttle to South Kaibab at 6:00 AM",
     "Ouray Hot Springs Pool is CLOSED Tue Nov 10",
     "Telluride and Ouray are in their off-season, so call restaurants ahead",
-    "Black Canyon road: open as of Nov 5, but it closes after the first big snow",
-    "Gas up in Tusayan, Kayenta and Moab (long empty stretches)",
-    "Sunset is ~5:15. Drive mountain passes in daylight.",
+    "Black Canyon rim road: closes to cars after the first big snow (usually mid-Nov). The Oak Flat plan works either way.",
+    "Gas up in Flagstaff, Cameron, Kayenta, Monticello and Gunnison (long empty stretches)",
+    "Sunsets: Grand Canyon 5:25 · Monument Valley 5:16 · Moab 5:09 · Ouray 5:03. Drive mountain passes in daylight.",
     "Weather: dry all week, highs ~50°F, lows in the mid-20s",
   ],
 };
@@ -553,7 +585,7 @@ if (typeof module !== "undefined") module.exports = { ART, P, ESTONIA };
     let s=Math.max(0,Math.floor((target-now)/1000));
     const d=Math.floor(s/86400); s%=86400; const h=Math.floor(s/3600); s%=3600; const m=Math.floor(s/60); s%=60;
     $("#count").innerHTML=[[d,"days"],[h,"hrs"],[m,"min"],[s,"sec"]].map(([n,l])=>`<div><b>${String(n).padStart(2,"0")}</b><span>${l}</span></div>`).join("");
-    $("#countlabel").textContent = now<start ? "until wheels up in Phoenix" : "until Woodland Park · Wed 2:00 PM";
+    $("#countlabel").textContent = now<start ? "until Mari lands in Phoenix (4:00 PM)" : "until Woodland Park · Wed 2:00 PM";
   }
   tick(); setInterval(tick,1000);
 
@@ -622,6 +654,7 @@ if (typeof module !== "undefined") module.exports = { ART, P, ESTONIA };
     }).join("");
     const food=`<div class="section-title">Where to eat</div><div class="card">${d.food.map(f=>`
       <div class="meal"><div class="m">${esc(f.meal)}</div><div class="o"><div><i>A</i><span>${esc(f.a)}</span></div><div><i>B</i><span>${esc(f.b)}</span></div></div></div>`).join("")}</div>`;
+    const crowd=d.crowd?`<div class="section-title">Dodging the crowds</div><div class="card"><ul class="heads">${d.crowd.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:"";
     const sleep=d.sleep?`<div class="section-title">Where to sleep · ${esc(d.sleep.town)}</div><div class="card">
       <p class="note">All three showed as available for 1 guest on Nov 7. Tap Copy, then paste the name into Airbnb search.</p>
       ${d.sleep.picks.map(p=>`<div class="bnb"><div class="n">“${esc(p.name)}”<small>${esc(p.note)}</small></div><button class="btn" type="button" data-copy="${esc(p.name)}">Copy</button></div>`).join("")}
@@ -631,7 +664,7 @@ if (typeof module !== "undefined") module.exports = { ART, P, ESTONIA };
         <div class="txt"><span class="pill">${d.day} · ${d.date} · 🚗 ${esc(d.drive)}</span>
         <h2>${esc(d.title)}</h2><p>${esc(d.route)}</p>
         <div class="meter"><div class="bar"><i style="width:${n?Math.round(c/n*100):0}%"></i></div><span>${c}/${n} stops</span></div></div></section>
-      <div class="tl">${stops}</div>${food}${sleep}</div>`;
+      <div class="tl">${stops}</div>${food}${crowd}${sleep}</div>`;
   }
 
   function pack(){
