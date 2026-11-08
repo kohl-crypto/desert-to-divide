@@ -112,7 +112,7 @@ async function icon(Comp, color, size = 256) {
     ["Phoenix", "Land + rental car", "sun"], ["Buc-ee's", "Brisket. Gobble.", "sun"], ["Grand Canyon", "Arrive ~11 PM", "sun"],
     ["Grand Canyon", "Sunrise hike", "mon"], ["Monument Valley", "Wildcat Trail", "mon"], ["Moab", "Sleep", "mon"],
     ["Arches", "Delicate Arch sunrise", "tue"], ["Telluride", "Lunch", "tue"], ["Ouray", "Snowy peaks · Sleep", "tue"],
-    ["Black Canyon", "Oak Flat Loop", "wed"], ["Monarch Pass", "Continental Divide", "wed"], ["Woodland Park", "Home by 2 PM", "wed"],
+    ["Black Canyon", "Oak Flat Loop", "wed"], ["Monarch Pass", "Continental Divide", "wed"], ["Charis Bible College", "Finish by 2 PM", "wed"],
   ];
   const lineHex = { sun: "F7B89A", mon: "F2A7B8", tue: "C3B1E1", wed: "A8D8C9" };
   const pos = (i) => { const r = Math.floor(i / 4), c = i % 4; const col = r % 2 === 0 ? c : 3 - c; return { x: 0.9 + col * 2.35, y: 1.25 + r * 1.3 }; };
@@ -138,7 +138,7 @@ async function icon(Comp, color, size = 256) {
     sun: ["Buc-ee's brisket (and the turkey noise)", "Flagstaff gas + coffee", "Night run to Tusayan"],
     mon: ["Sunrise hike below the Grand Canyon rim", "Wildcat Trail around the Mittens", "Forrest Gump Point at golden hour"],
     tue: ["Delicate Arch at sunrise", "Hole N\" The Rock oddities", "Snowy Dallas Divide + hot springs"],
-    wed: ["Black Canyon's Oak Flat Loop", "Continental Divide at Monarch Pass", "Home in Woodland Park by 2 PM"],
+    wed: ["Black Canyon's Oak Flat Loop", "Continental Divide at Monarch Pass", "Finish at Charis Bible College by 2 PM"],
   };
   function divider(d) {
     const sl = pres.addSlide({ masterName: "Day Divider", sectionTitle: "Day by day" });
@@ -210,8 +210,8 @@ async function icon(Comp, color, size = 256) {
   circleIcon(s, 6.5, 1.37, 0.45, C.background1, I.home, "Deadline");
   text(s, "Hard deadline", { x: 7.05, y: 1.42, w: 2.3, h: 0.35, fontFace: THEME.headFontFace, fontSize: 18, bold: true, valign: "middle" });
   text(s, "2:00 PM", { x: 6.5, y: 2.05, w: 2.85, h: 0.75, fontFace: THEME.headFontFace, fontSize: 44, bold: true });
-  text(s, "Woodland Park, CO. Leave Black Canyon by 8:15 AM to arrive around 1:00 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
-  text(s, "Lunch: leftovers. Then the rental goes back at Colorado Springs airport.", { x: 6.5, y: 4.1, w: 2.85, h: 0.7, fontSize: 12, italic: true });
+  text(s, "Charis Bible College, Woodland Park. Leave Black Canyon by 8:15 AM to arrive around 1:00 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
+  text(s, "Lunch: leftover Buc-ee's jerky and Beaver Nuggets.", { x: 6.5, y: 4.1, w: 2.85, h: 0.7, fontSize: 12, italic: true });
 
   // ---------- Hikes ----------
   pres.addSection({ title: "Hikes & stops" });
