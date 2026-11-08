@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Desert→Divide">
-<meta name="description" content="Mari's road-trip tour guide: Phoenix → Grand Canyon → Monument Valley → Arches → Ouray → Black Canyon → Woodland Park.">
+<meta name="description" content="Mari's Colorado hot springs tour guide: Colorado Springs → Buena Vista → Gunnison → Ouray → Salida → Woodland Park.">
 <title>Desert to Divide · Mari's Road Trip</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏜️</text></svg>">
 <style>
@@ -186,6 +186,15 @@
   .ptr.bottom-right{right:12px;bottom:calc(8px + env(safe-area-inset-bottom,0px))}
   .ptr.top-right{right:12px;top:calc(8px + env(safe-area-inset-top,0px))}
   @keyframes ptrbob{0%,100%{margin-top:0}50%{margin-top:8px}}
+  #fbBtn{position:fixed;z-index:60;top:calc(8px + env(safe-area-inset-top,0px));right:max(10px,env(safe-area-inset-right,0px));background:#2F7A66;color:#fff;border:2px solid #fff;border-radius:999px;padding:9px 14px;font:inherit;font-size:14px;font-weight:800;min-height:44px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.28)}
+  .tabs-inner{padding-right:130px}
+  #fbSheet{position:fixed;inset:0;z-index:120;background:rgba(10,24,30,.72);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  #fbSheet .is-card{max-height:90vh}
+  .fb-l{font-size:13px;font-weight:800;color:var(--muted)}
+  #fbSheet select,#fbSheet textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface-2);border:2px solid var(--line);border-radius:12px;padding:10px;min-height:44px}
+  #fbSheet textarea{resize:vertical}
+  .fb-w{margin:0;font-size:13px;color:var(--muted)}
+  .fb-s{margin:0;min-height:1.2em;font-weight:700;color:#2F7A66}
   .heads{margin:0;padding-left:20px}
   .heads li{margin-bottom:8px;font-size:14.5px}
   footer{max-width:760px;margin:0 auto;padding:0 14px calc(36px + var(--safe-bottom));text-align:center;color:var(--muted);font-size:13px}
@@ -211,7 +220,7 @@
   <div class="hero-inner">
     <span class="eyebrow"><img alt="" src="data:image/svg+xml,__FLAG__"> Mari's road trip · Nov 8–11</span>
     <h1>Desert <em>to</em> Divide</h1>
-    <p class="lede">Phoenix → Grand Canyon → Monument Valley → Arches → Ouray → Black Canyon → Woodland Park. Four days, four epic hikes, one mandatory Buc-ee's.</p>
+    <p class="lede">Colorado Springs → Buena Vista → Gunnison → Ouray → Salida → Woodland Park. Four days and five hot springs, routed around the flooded roads.</p>
     <div class="countdown" id="count" aria-live="off"></div>
     <div class="countlabel" id="countlabel"></div>
     <button class="btn primary installBtn" type="button" style="--day:#A8D8C9;margin-top:14px">📲 Install app on my phone</button>
@@ -244,8 +253,8 @@
     get(k,d){ try{ const v=localStorage.getItem("d2d2-"+k); return v===null?d:JSON.parse(v);}catch(e){ return d; } },
     set(k,v){ try{ localStorage.setItem("d2d2-"+k, JSON.stringify(v)); }catch(e){} }
   };
-  let done = store.get("done",{}), packed = store.get("packed",{}), gobbles = store.get("gobbles",0);
-  const kindIcon = {hike:"🥾",fun:"✨",food:"🍽️",drive:"🚗",home:"🏁"};
+  let done = store.get("done_co",{}), packed = store.get("packed_co",{}), gobbles = store.get("gobbles",0);
+  const kindIcon = {hike:"🥾",soak:"♨️",fun:"✨",food:"🍽️",drive:"🚗",home:"🏁"};
 
   // ----- Splash: waving Estonian flag for 2 seconds -----
   const flag = $("#flag");
@@ -322,6 +331,55 @@
   }));
   if ("serviceWorker" in navigator && location.protocol.indexOf("http")===0) navigator.serviceWorker.register("sw.js").catch(()=>{});
 
+  // ----- Feedback: sends Mari's note to Lance's inbox (via a small relay); queues it if she has no signal -----
+  const FEEDBACK_URL = "__FEEDBACK_URL__", APP_VERSION = "__VERSION__";
+  const fbQueue = ()=>store.get("fbq",[]);
+  async function fbSend(item){
+    try{
+      const r = await fetch(FEEDBACK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(item)});
+      if (r.ok) return "sent";
+      return (r.status>=400 && r.status<500 && r.status!==429) ? "rejected" : "retry";
+    }catch(e){ return "retry"; }
+  }
+  async function fbFlush(){
+    let q = fbQueue(); if(!q.length) return;
+    const keep=[]; for (const it of q){ const s = await fbSend(it); if (s==="retry") keep.push(it); }
+    store.set("fbq",keep); if (keep.length<q.length) toast("Your saved feedback was sent ✓");
+  }
+  window.addEventListener("online", fbFlush);
+  function fbWhere(){ const id=(location.hash||"").slice(1)||"home"; const t=(typeof tabs!=="undefined"?tabs:[]).find(x=>x.id===id); return t?(t.label.replace(/[^\w ]/g,"").trim()+" "+(t.sub||"")).trim():id; }
+  function closeFb(){ const s=$("#fbSheet"); if(s) s.remove(); }
+  function openFb(){
+    closeFb();
+    const wrap=document.createElement("div"); wrap.id="fbSheet"; wrap.setAttribute("role","dialog"); wrap.setAttribute("aria-modal","true"); wrap.setAttribute("aria-label","Send feedback");
+    wrap.innerHTML='<form class="is-card" id="fbForm" novalidate><span class="is-device">Feedback</span><h2>What should change?</h2>'
+      +'<label class="fb-l" for="fbCat">What kind?</label><select id="fbCat"><option>Something is wrong</option><option>Please add something</option><option>Please change something</option><option>Please remove something</option><option>Just a note</option></select>'
+      +'<label class="fb-l" for="fbMsg">Tell us</label><textarea id="fbMsg" rows="5" maxlength="2000" placeholder="Example: the Tuesday breakfast spot is closed, swap it for..." required></textarea>'
+      +'<p class="fb-w">About: <b id="fbWhere"></b></p>'
+      +'<input type="text" name="website" id="fbHp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">'
+      +'<p class="fb-s" id="fbStatus" role="status" aria-live="polite"></p>'
+      +'<div class="is-acts"><button class="btn" type="button" id="fbCancel">Cancel</button><button class="btn primary" type="submit" id="fbGo">Send</button></div></form>';
+    document.body.appendChild(wrap);
+    $("#fbWhere").textContent = fbWhere();
+    $("#fbCancel").addEventListener("click",closeFb);
+    wrap.addEventListener("click",e=>{ if(e.target===wrap) closeFb(); });
+    $("#fbMsg").focus();
+    $("#fbForm").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const msg=$("#fbMsg").value.trim(), st=$("#fbStatus");
+      if (msg.length<3){ st.textContent="Please write a little more."; return; }
+      const item={message:msg,category:$("#fbCat").value,where:fbWhere(),device:navigator.userAgent.slice(0,150),version:APP_VERSION,website:$("#fbHp").value};
+      $("#fbGo").disabled=true; st.textContent="Sending…";
+      const s=await fbSend(item);
+      if (s==="sent"){ st.textContent="Sent! Thank you 💌"; setTimeout(closeFb,1600); }
+      else if (s==="rejected"){ st.textContent="That didn't go through. Please try again."; $("#fbGo").disabled=false; }
+      else { const q=fbQueue(); q.push(item); store.set("fbq",q.slice(-10)); st.textContent="Couldn't send just now. Saved on your phone and it will send by itself when it can."; setTimeout(closeFb,2600); }
+    });
+  }
+  const fbBtn=document.createElement("button"); fbBtn.id="fbBtn"; fbBtn.type="button"; fbBtn.textContent="💬 Feedback"; fbBtn.setAttribute("aria-label","Send feedback");
+  fbBtn.addEventListener("click",openFb); document.body.appendChild(fbBtn);
+  fbFlush();
+
   function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1700); }
 
   // ----- Countdown -----
@@ -332,7 +390,7 @@
     let s=Math.max(0,Math.floor((target-now)/1000));
     const d=Math.floor(s/86400); s%=86400; const h=Math.floor(s/3600); s%=3600; const m=Math.floor(s/60); s%=60;
     $("#count").innerHTML=[[d,"days"],[h,"hrs"],[m,"min"],[s,"sec"]].map(([n,l])=>`<div><b>${String(n).padStart(2,"0")}</b><span>${l}</span></div>`).join("");
-    $("#countlabel").textContent = now<start ? "until Mari lands in Phoenix (4:00 PM)" : "until Woodland Park · Wed 2:00 PM";
+    $("#countlabel").textContent = now<start ? "until Mari lands in Colorado Springs (4:00 PM)" : "until Woodland Park · Wed 2:00 PM";
   }
   tick(); setInterval(tick,1000);
 
@@ -391,7 +449,7 @@
         ${s.desc?`<p>${esc(s.desc)}</p>`:""}
         ${s.list?`<ul>${s.list.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
         ${opts}
-        ${s.gobble?`<button class="gobble" id="gob" type="button">🦃 “FRESH BRISKET ON THE BOARD!”<small>Tap to gobble · sound on 🔊</small></button><div class="gcount" id="gcount">${gobbles} ${gobbles===1?"gobble":"gobbles"} logged 🦃</div>`:""}
+        ${s.gobble?`<button class="gobble" id="gob" type="button">🦃 “THANKSGIVING IS 18 DAYS AWAY!”<small>Tap to gobble · sound on 🔊</small></button><div class="gcount" id="gcount">${gobbles} ${gobbles===1?"gobble":"gobbles"} logged 🦃</div>`:""}
         <div class="acts">
           ${s.map?`<a class="btn primary" href="${s.map}" target="_blank" rel="noopener">📍 Map</a>`:""}
           ${s.url?`<a class="btn" href="${s.url}" target="_blank" rel="noopener">Info ↗</a>`:""}
@@ -455,8 +513,8 @@
     m.querySelectorAll("[data-slide]").forEach(b=>b.addEventListener("click",()=>openSlide(+b.dataset.slide)));
     m.setAttribute("aria-labelledby","tab-"+id);
     m.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go,true)));
-    m.querySelectorAll(".check").forEach(b=>b.addEventListener("click",()=>{ done[b.dataset.k]=!done[b.dataset.k]; store.set("done",done); const y=scrollY; show(id); scrollTo(0,y); if(done[b.dataset.k]) toast("Nice! ✓"); }));
-    m.querySelectorAll("[data-p]").forEach(b=>b.addEventListener("change",()=>{ packed[b.dataset.p]=b.checked; store.set("packed",packed); }));
+    m.querySelectorAll(".check").forEach(b=>b.addEventListener("click",()=>{ done[b.dataset.k]=!done[b.dataset.k]; store.set("done_co",done); const y=scrollY; show(id); scrollTo(0,y); if(done[b.dataset.k]) toast("Nice! ✓"); }));
+    m.querySelectorAll("[data-p]").forEach(b=>b.addEventListener("change",()=>{ packed[b.dataset.p]=b.checked; store.set("packed_co",packed); }));
     m.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",()=>{ const t=b.dataset.copy; (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Copied ✓")).catch(()=>toast(t)); }));
     const g=$("#gob"); if(g) g.addEventListener("click",()=>gobble(g));
     try{ history.replaceState(null,"","#"+id); }catch(e){}

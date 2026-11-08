@@ -28,14 +28,14 @@ async function icon(Comp, color, size = 256) {
 (async () => {
   const pres = new pptxgen();
   pres.layout = "LAYOUT_16x9";
-  pres.title = "Desert to Divide: Mari's Road Trip Tour Guide";
+  pres.title = "Desert to Divide: Mari's Colorado Hot Springs Tour Guide";
   pres.author = "Lance";
   pres.theme = { headFontFace: THEME.headFontFace, bodyFontFace: THEME.bodyFontFace };
   const C = pres.SchemeColor;
   const dayFill = { sun: C.accent1, mon: C.accent2, tue: C.accent3, wed: C.accent4 };
   const ink = "3D3A4B";
   const I = {};
-  for (const [k, comp] of Object.entries({ hike: fa.FaHiking, fun: fa.FaStar, food: fa.FaUtensils, drive: fa.FaCarSide, home: fa.FaFlagCheckered, bed: fa.FaBed, drum: fa.FaDrumstickBite, check: fa.FaCheck, warn: fa.FaExclamationTriangle, map: fa.FaMapMarkedAlt, camera: fa.FaCameraRetro, gas: fa.FaGasPump }))
+  for (const [k, comp] of Object.entries({ hike: fa.FaHiking, soak: fa.FaHotTub || fa.FaTint, fun: fa.FaStar, food: fa.FaUtensils, drive: fa.FaCarSide, home: fa.FaFlagCheckered, bed: fa.FaBed, drum: fa.FaDrumstickBite, check: fa.FaCheck, warn: fa.FaExclamationTriangle, map: fa.FaMapMarkedAlt, camera: fa.FaCameraRetro, gas: fa.FaGasPump }))
     I[k] = await icon(comp, ink);
 
   pres.defineSlideMaster({
@@ -82,9 +82,9 @@ async function icon(Comp, color, size = 256) {
   s.addImage({ path: IMG("estonia"), x: 0.95, y: 1.1, w: 0.42, h: 0.27, objectName: "Estonian flag", altText: "Estonian flag" });
   text(s, "FOR MARI  ·  NOV 8–11, 2026", { x: 1.5, y: 1.08, w: 4.3, h: 0.3, fontSize: 12, bold: true, color: INK.tue, charSpacing: 3, valign: "middle" });
   s.addText("Desert to Divide", { placeholder: "title" });
-  s.addText("Phoenix → Grand Canyon → Monument Valley → Arches → Ouray → Black Canyon → Woodland Park", { placeholder: "body" });
-  text(s, "Four days · four epic hikes · one mandatory Buc-ee's", { x: 0.95, y: 4.15, w: 5, h: 0.35, fontSize: 13, italic: true, color: INK.mon });
-  s.addNotes("Tere, Mari! Four days, four epic hikes, one mandatory Buc-ee's. The interactive app has a countdown, check-offs, map buttons and the gobble button.");
+  s.addText("Colorado Springs → Buena Vista → Gunnison → Ouray → Salida → Woodland Park", { placeholder: "body" });
+  text(s, "Four days · five hot springs · routed around the flooded roads", { x: 0.95, y: 4.15, w: 5, h: 0.35, fontSize: 13, italic: true, color: INK.mon });
+  s.addNotes("Tere, Mari! Four days, five hot springs, and a route that avoids the flooded roads around Pagosa Springs and Durango. The interactive app has a countdown, check-offs, map buttons and the gobble button.");
 
   // ---------- 2. At a glance ----------
   s = pres.addSlide({ masterName: "Title Only", sectionTitle: "Welcome" });
@@ -109,10 +109,10 @@ async function icon(Comp, color, size = 256) {
   s = pres.addSlide({ masterName: "Title Only", sectionTitle: "Welcome" });
   s.addText("The route", { placeholder: "title" });
   const nodes = [
-    ["Phoenix", "Land + rental car", "sun"], ["Buc-ee's", "Brisket. Gobble.", "sun"], ["Grand Canyon", "Arrive ~11 PM", "sun"],
-    ["Grand Canyon", "Sunrise hike", "mon"], ["Monument Valley", "Wildcat Trail", "mon"], ["Moab", "Sleep", "mon"],
-    ["Arches", "Delicate Arch sunrise", "tue"], ["Telluride", "Lunch", "tue"], ["Ouray", "Snowy peaks · Sleep", "tue"],
-    ["Black Canyon", "Oak Flat Loop", "wed"], ["Monarch Pass", "Continental Divide", "wed"], ["Charis Bible College", "Finish by 2 PM", "wed"],
+    ["Colorado Springs", "Land + rental car", "sun"], ["Woodland Park", "Dinner + gobble", "sun"], ["Cottonwood", "Starlit soak · Sleep", "sun"],
+    ["Mt Princeton", "Chalk Creek soak", "mon"], ["Monarch Pass", "Continental Divide", "mon"], ["Ouray", "Pool at dusk · Sleep", "mon"],
+    ["Orvis, Ridgway", "Morning soak", "tue"], ["Blue Mesa", "US-50 to Gunnison", "tue"], ["Salida", "Sunset soak · Sleep", "tue"],
+    ["Salida", "Bonus sunrise soak", "wed"], ["Wilkerson Pass", "Pikes Peak view", "wed"], ["Charis Bible College", "Finish by 2 PM", "wed"],
   ];
   const lineHex = { sun: "F7B89A", mon: "F2A7B8", tue: "C3B1E1", wed: "A8D8C9" };
   const pos = (i) => { const r = Math.floor(i / 4), c = i % 4; const col = r % 2 === 0 ? c : 3 - c; return { x: 0.9 + col * 2.35, y: 1.25 + r * 1.3 }; };
@@ -133,12 +133,12 @@ async function icon(Comp, color, size = 256) {
   });
 
   // ---------- Day dividers + timelines ----------
-  const kindIcon = { hike: I.hike, fun: I.fun, food: I.food, drive: I.drive, home: I.home };
+  const kindIcon = { hike: I.hike, soak: I.soak, fun: I.fun, food: I.food, drive: I.drive, home: I.home };
   const highlights = {
-    sun: ["Buc-ee's brisket (and the turkey noise)", "Flagstaff gas + coffee", "Night run to Tusayan"],
-    mon: ["Sunrise hike below the Grand Canyon rim", "Wildcat Trail around the Mittens", "Forrest Gump Point at golden hour"],
-    tue: ["Delicate Arch at sunrise", "Hole N\" The Rock oddities", "Snowy Dallas Divide + hot springs"],
-    wed: ["Black Canyon's Oak Flat Loop", "Continental Divide at Monarch Pass", "Finish at Charis Bible College by 2 PM"],
+    sun: ["Dinner in Woodland Park (and the turkey noise)", "Night drive over Wilkerson Pass", "Cottonwood Hot Springs under the new moon"],
+    mon: ["Mt Princeton under the Chalk Cliffs", "Monarch Pass: the Continental Divide", "Ouray Hot Springs Pool at dusk"],
+    tue: ["Orvis Hot Springs, Ridgway", "US-50 over Blue Mesa", "Sunset soak in Salida"],
+    wed: ["A bonus sunrise soak in Salida", "South Park and Wilkerson Pass", "Finish at Charis Bible College by 2 PM"],
   };
   function divider(d) {
     const sl = pres.addSlide({ masterName: "Day Divider", sectionTitle: "Day by day" });
@@ -188,18 +188,18 @@ async function icon(Comp, color, size = 256) {
   s = pres.addSlide({ masterName: "Title Only", sectionTitle: "Day by day" });
   s.background = { color: "FDEEDC" };
   img(s, "turkey-tall", { x: 6.4, y: 0, w: 3.6, h: 5.625 });
-  text(s, "MISSION: BUC-EE'S GOODYEAR", { x: 0.5, y: 0.4, w: 5.6, h: 0.3, fontSize: 12, bold: true, color: INK.mon, charSpacing: 3 });
-  text(s, "When they yell “Fresh brisket on the board!”…", { x: 0.5, y: 0.75, w: 5.7, h: 0.95, fontFace: THEME.headFontFace, fontSize: 26, bold: true });
+  text(s, "MISSION: WOODLAND PARK DINNER", { x: 0.5, y: 0.4, w: 5.6, h: 0.3, fontSize: 12, bold: true, color: INK.mon, charSpacing: 3 });
+  text(s, "Thanksgiving is 18 days away. Practice…", { x: 0.5, y: 0.75, w: 5.7, h: 0.95, fontFace: THEME.headFontFace, fontSize: 26, bold: true });
   text(s, "GOBBLE GOBBLE.", { x: 0.5, y: 1.7, w: 5.8, h: 0.75, fontFace: THEME.headFontFace, fontSize: 44, bold: true, color: INK.mon });
-  [[I.drum, "Chopped brisket sandwich", "From the carving station"], [I.fun, "Beaver Nuggets + fudge", "Plus a kolache and some jerky"],
-   [I.camera, "Beaver statue selfie", "Then the famous bathrooms"], [I.gas, "Gas up", "120 pumps · pay at the pump"]].forEach(([ic, h, sub], i) => {
+  [[I.drum, "Hearty dinner", "Hot and quick on US-24"], [I.gas, "Fill the tank", "Next sure gas: Buena Vista"],
+   [I.camera, "Pikes Peak glow", "Last light as you climb Ute Pass"], [I.fun, "Gobble in the app", "Tap the turkey button"]].forEach(([ic, h, sub], i) => {
     const x = 0.5 + (i % 2) * 2.9, y = 2.7 + Math.floor(i / 2) * 1.05;
-    card(s, x, y, 2.75, 0.9, C.background1, "Buc-ee's " + h);
+    card(s, x, y, 2.75, 0.9, C.background1, "Mission " + h);
     circleIcon(s, x + 0.15, y + 0.2, 0.5, [C.accent1, C.accent2, C.accent3, C.accent4][i], ic, h);
     text(s, h, { x: x + 0.78, y: y + 0.14, w: 1.9, h: 0.3, fontSize: 13, bold: true, fit: "shrink" });
     text(s, sub, { x: x + 0.78, y: y + 0.45, w: 1.9, h: 0.35, fontSize: 11, color: C.accent6 });
   });
-  text(s, "1001 N Bullard Ave, Goodyear, AZ · ~40 min west of Sky Harbor", { x: 0.5, y: 4.95, w: 5.8, h: 0.3, fontSize: 11, color: C.accent6 });
+  text(s, "Woodland Park, CO · ~40 min west of Colorado Springs Airport", { x: 0.5, y: 4.95, w: 5.8, h: 0.3, fontSize: 11, color: C.accent6 });
   s.addNotes("Commit to the turkey noise. Loud. Non-negotiable.");
 
   divider(T.days[1]); timeline(T.days[1]);
@@ -210,21 +210,21 @@ async function icon(Comp, color, size = 256) {
   circleIcon(s, 6.5, 1.37, 0.45, C.background1, I.home, "Deadline");
   text(s, "Hard deadline", { x: 7.05, y: 1.42, w: 2.3, h: 0.35, fontFace: THEME.headFontFace, fontSize: 18, bold: true, valign: "middle" });
   text(s, "2:00 PM", { x: 6.5, y: 2.05, w: 2.85, h: 0.75, fontFace: THEME.headFontFace, fontSize: 44, bold: true });
-  text(s, "Charis Bible College, Woodland Park. Leave Black Canyon by 8:15 AM to arrive around 1:00 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
-  text(s, "Lunch: leftover Buc-ee's jerky and Beaver Nuggets.", { x: 6.5, y: 4.1, w: 2.85, h: 0.7, fontSize: 12, italic: true });
+  text(s, "Charis Bible College, Woodland Park. Leave Salida by 9:45 AM to arrive around 12:45 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
+  text(s, "Lunch: something quick in Woodland Park.",{ x: 6.5, y: 4.1, w: 2.85, h: 0.7, fontSize: 12, italic: true });
 
   // ---------- Hikes ----------
   pres.addSection({ title: "Hikes & stops" });
   s = pres.addSlide({ masterName: "Title Only", sectionTitle: "Hikes & stops" });
-  s.addText("The four epic hikes", { placeholder: "title" });
-  const hikes = T.days.flatMap((d) => d.stops.filter((x) => x.kind === "hike" && x.options).map((h) => ({ d, h })));
-  const hikeArt = ["canyon", "monument", "arch", "black"];
+  s.addText("The big four soaks", { placeholder: "title" });
+  const hikes = T.days.flatMap((d) => d.stops.filter((x) => x.kind === "soak" && x.options).map((h) => ({ d, h }))).slice(0, 4);
+  const hikeArt = ["mountains", "black", "canyon", "road"];
   hikes.forEach(({ d, h }, i) => {
     const x = 0.5 + (i % 2) * 4.6, y = 1.15 + Math.floor(i / 2) * 2.05;
     card(s, x, y, 4.4, 1.9, C.background2, "Hike card " + (i + 1));
     img(s, hikeArt[i] + "-sq", { x: x + 0.12, y: y + 0.12, w: 1.25, h: 1.66, sizing: { type: "cover", w: 1.25, h: 1.66 } });
     text(s, `${d.day} · ${h.t}`, { x: x + 1.5, y: y + 0.14, w: 2.8, h: 0.22, fontSize: 10, bold: true, color: INK[d.id] });
-    text(s, h.name.replace(/^HIKE \d: /, ""), { x: x + 1.5, y: y + 0.36, w: 2.8, h: 0.3, fontSize: 14, bold: true, fit: "shrink" });
+    text(s, h.short || h.name.replace(/^SOAK \d: /, ""), { x: x + 1.5, y: y + 0.36, w: 2.8, h: 0.3, fontSize: 14, bold: true, fit: "shrink" });
     text(s, h.options.map((o, j) => ({ text: o.replace(/^([A-C])[^:]*:\s*/, "$1: ").replace(/\. .*$/, ""), options: { breakLine: j < h.options.length - 1, paraSpaceAfter: 3 } })),
       { x: x + 1.5, y: y + 0.72, w: 2.8, h: 1.08, fontSize: 11, fit: "shrink" });
   });
@@ -234,14 +234,14 @@ async function icon(Comp, color, size = 256) {
   s = pres.addSlide({ masterName: "Title Only", sectionTitle: "Hikes & stops" });
   s.addText("Quirky, out-of-the-way stops", { placeholder: "title" });
   const quirky = [
-    ["sun", "Buc-ee's Goodyear", "Arizona's first. Brisket on the board."],
-    ["mon", "Kayenta Burger King", "A Navajo Code Talkers exhibit. Really."],
-    ["mon", "Forrest Gump Point", "Stand in the road. Run, Forrest, run."],
-    ["mon", "Cameron Trading Post", "A 1916 trading post and Navajo tacos."],
-    ["tue", "Hole N\" The Rock", "14-room house blasted into a cliff, plus a camel."],
-    ["tue", "Wilson Arch", "A giant arch right next to the highway."],
-    ["tue", "Dallas Divide", "Snowy Sneffels peaks at golden hour."],
-    ["wed", "Monarch Pass", "Continental Divide selfie at 11,312 ft."],
+    ["sun", "Wilkerson Pass", "A night crossing at 9,507 ft into South Park."],
+    ["mon", "Chalk Cliffs", "White cliffs above Mt Princeton's creekside pools."],
+    ["mon", "Monarch Pass", "Continental Divide selfie at 11,312 ft."],
+    ["mon", "Black Canyon rim", "A 2,000-ft drop, 2 minutes from the car."],
+    ["tue", "Orvis, Ridgway", "A quiet, old-school spring under the snowy San Juans."],
+    ["tue", "Blue Mesa", "Dillon Pinnacles and mirror-still water."],
+    ["tue", "Salida sunset", "A soak while the Collegiates turn pink."],
+    ["wed", "South Park", "A huge empty basin with elk and pronghorn."],
   ];
   quirky.forEach(([d, h, sub], i) => {
     const x = 0.5 + (i % 4) * 2.27, y = 1.15 + Math.floor(i / 4) * 2.0;
@@ -269,7 +269,7 @@ async function icon(Comp, color, size = 256) {
   // ---------- Sleep ----------
   s = pres.addSlide({ masterName: "Title Only", sectionTitle: "Eat & sleep" });
   s.addText("Where to sleep", { placeholder: "title" });
-  const sleepArt = { sun: "canyon", mon: "arch", tue: "mountains" };
+  const sleepArt = { sun: "mountains", mon: "black", tue: "canyon" };
   T.days.filter((d) => d.sleep).forEach((d, i) => {
     const x = 0.5 + i * 3.07, y = 1.1;
     card(s, x, y, 2.87, 4.05, C.background2, "Sleep " + d.sleep.town);
@@ -280,7 +280,7 @@ async function icon(Comp, color, size = 256) {
       { text: p.note, options: { fontSize: 10, color: C.accent6, breakLine: j < 2, paraSpaceAfter: 5 } },
     ]), { x: x + 0.18, y: y + 1.7, w: 2.55, h: 2.25, fit: "shrink" });
   });
-  text(s, "All showed as available for 1 guest on Nov 7. Search Airbnb by town and dates, then look for these names.", { x: 0.5, y: 5.2, w: 8.5, h: 0.25, fontSize: 10, color: C.accent6 });
+  text(s, "These are ideas, not bookings. Check dates, price and parking, then search Airbnb by town to compare.", { x: 0.5, y: 5.2, w: 8.5, h: 0.25, fontSize: 10, color: C.accent6 });
 
   // ---------- Pack ----------
   pres.addSection({ title: "Before you go" });
@@ -289,11 +289,11 @@ async function icon(Comp, color, size = 256) {
   card(s, 0.5, 1.15, 4.3, 3.95, C.background2, "Packing card");
   circleIcon(s, 0.68, 1.3, 0.45, C.accent4, I.check, "Packing");
   text(s, "Pack list", { x: 1.25, y: 1.35, w: 3, h: 0.35, fontFace: THEME.headFontFace, fontSize: 18, bold: true, valign: "middle" });
-  text(s, T.checklist.slice(1).map((c, i, a) => ({ text: c, options: { bullet: true, breakLine: i < a.length - 1 } })), { x: 0.7, y: 1.9, w: 3.95, h: 3.1, fontSize: 12, paraSpaceAfter: 3, fit: "shrink" });
+  text(s, T.deckPack.map((c, i, a) => ({ text: c, options: { bullet: true, breakLine: i < a.length - 1 } })), { x: 0.7, y: 1.9, w: 3.95, h: 3.1, fontSize: 12, paraSpaceAfter: 3, fit: "shrink" });
   card(s, 5.2, 1.15, 4.3, 3.95, C.background2, "Heads up card");
   circleIcon(s, 5.38, 1.3, 0.45, C.accent2, I.warn, "Heads up");
   text(s, "Heads up", { x: 5.95, y: 1.35, w: 3, h: 0.35, fontFace: THEME.headFontFace, fontSize: 18, bold: true, valign: "middle" });
-  text(s, T.heads.map((c, i, a) => ({ text: c, options: { bullet: true, breakLine: i < a.length - 1 } })), { x: 5.4, y: 1.9, w: 3.95, h: 3.1, fontSize: 12, paraSpaceAfter: 3, fit: "shrink" });
+  text(s, T.deckHeads.map((c, i, a) => ({ text: c, options: { bullet: true, breakLine: i < a.length - 1 } })), { x: 5.4, y: 1.9, w: 3.95, h: 3.1, fontSize: 12, paraSpaceAfter: 3, fit: "shrink" });
 
   // ---------- Closing ----------
   s = pres.addSlide({ masterName: "Hero", sectionTitle: "Before you go" });
