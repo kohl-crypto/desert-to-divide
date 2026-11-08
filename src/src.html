@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FBE3EC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#221D2E" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Desert→Divide">
@@ -45,6 +47,10 @@
   .hello{text-align:center;margin-top:28px}
   .hello b{display:block;font-size:34px;letter-spacing:-.5px}
   .hello span{color:var(--muted);font-size:16px}
+  .taphint{margin:14px 0 0;font-weight:700;color:var(--day-ink,#3D3A4B)}
+  .skip{margin-top:18px;background:none;border:2px solid currentColor;color:var(--muted);border-radius:999px;padding:10px 18px;font:inherit;font-size:14px;font-weight:700;min-height:44px;cursor:pointer}
+  .installhelp{margin:12px auto 0;max-width:420px;text-align:left;font-size:14px;line-height:1.5}
+  .installhelp[hidden]{display:none}
   @media (prefers-color-scheme: dark){#splash{background:linear-gradient(160deg,#1E2A3E,#2A2140 60%,#2E2533)}}
 
   /* ---------- Hero ---------- */
@@ -167,7 +173,10 @@
 <div id="splash" role="dialog" aria-label="Welcome">
   <div>
     <div class="flagwrap"><div class="flagbox"><div class="pole"></div><div class="flag" id="flag" aria-label="Estonian flag"></div></div></div>
-    <div class="hello"><b>Tere, Mari! 🇪🇪</b><span>Head reisi: have a great trip!</span></div>
+    <div class="hello"><b>Tere, Mari! 🇪🇪</b><span>Head reisi: have a great trip!</span>
+      <p id="tapHint" class="taphint" hidden>Tap anywhere to hear the anthem 🔊</p>
+      <button id="skip" class="skip" type="button">Skip anthem</button>
+    </div>
   </div>
 </div>
 
@@ -178,6 +187,8 @@
     <p class="lede">Phoenix → Grand Canyon → Monument Valley → Arches → Ouray → Black Canyon → Woodland Park. Four days, four epic hikes, one mandatory Buc-ee's.</p>
     <div class="countdown" id="count" aria-live="off"></div>
     <div class="countlabel" id="countlabel"></div>
+    <button class="btn primary installBtn" type="button" style="--day:#A8D8C9;margin-top:14px">📲 Install app on my phone</button>
+    <div id="installHelp" class="installhelp" hidden></div>
   </div>
   <div class="hero-art" aria-hidden="true">__HEROART__</div>
 </header>
@@ -191,6 +202,7 @@
 <div id="chant" aria-hidden="true"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <audio id="gobbleAudio" preload="auto" src="data:audio/mpeg;base64,__AUDIO__"></audio>
+<audio id="anthemAudio" preload="auto" src="data:audio/mpeg;base64,__ANTHEM__"></audio>
 
 <script>
 /*__DATA__*/
@@ -211,7 +223,43 @@
   // ----- Splash: waving Estonian flag for 2 seconds -----
   const flag = $("#flag");
   for (let i=0;i<22;i++){ const s=document.createElement("i"); s.style.animationDelay=(-i*0.06)+"s"; flag.appendChild(s); }
-  setTimeout(()=>{ $("#splash").classList.add("hide"); setTimeout(()=>$("#splash").remove(),600); }, 2000);
+  // The flag stays up, waving, for the whole anthem; it closes when the song ends (or on Skip).
+  const anthem = $("#anthemAudio"), splash = $("#splash"), hint = $("#tapHint");
+  let splashClosed = false;
+  function closeSplash(){
+    if (splashClosed) return; splashClosed = true;
+    try{ anthem.pause(); }catch(e){}
+    splash.classList.add("hide"); setTimeout(()=>splash.remove(),600);
+  }
+  function playAnthem(){
+    try{
+      const p = anthem.play();
+      if (p && p.then) p.then(()=>{ hint.hidden = true; }).catch(()=>{ hint.hidden = false; });
+    }catch(e){ hint.hidden = false; }
+  }
+  anthem.addEventListener("ended", closeSplash);
+  anthem.addEventListener("error", ()=>setTimeout(closeSplash,2000));
+  $("#skip").addEventListener("click", (e)=>{ e.stopPropagation(); closeSplash(); });
+  splash.addEventListener("click", ()=>{ if (anthem.paused && !splashClosed) playAnthem(); });
+  playAnthem();
+
+  // ----- Install on phone -----
+  let deferredPrompt = null;
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+  const installBtns = document.querySelectorAll(".installBtn");
+  if (standalone) installBtns.forEach(b=>b.remove());
+  window.addEventListener("beforeinstallprompt", (e)=>{ e.preventDefault(); deferredPrompt = e; });
+  window.addEventListener("appinstalled", ()=>{ installBtns.forEach(b=>b.remove()); const h=$("#installHelp"); if(h) h.hidden=true; toast("Installed! Find it on your home screen 🎉"); });
+  installBtns.forEach(b=>b.addEventListener("click", async ()=>{
+    if (deferredPrompt){ deferredPrompt.prompt(); try{ await deferredPrompt.userChoice; }catch(e){} deferredPrompt = null; return; }
+    const h = $("#installHelp");
+    h.innerHTML = isIOS
+      ? "<b>On iPhone:</b><ol><li>Tap the <b>Share</b> button (square with an arrow) at the bottom of Safari.</li><li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li></ol>"
+      : "<b>On Android:</b><ol><li>Tap the <b>⋮ menu</b> in Chrome.</li><li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap <b>Install</b>.</li></ol>";
+    h.hidden = false; h.scrollIntoView({behavior:"smooth",block:"center"});
+  }));
+  if ("serviceWorker" in navigator && location.protocol.indexOf("http")===0) navigator.serviceWorker.register("sw.js").catch(()=>{});
 
   function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1700); }
 
