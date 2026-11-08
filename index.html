@@ -170,6 +170,22 @@
   .lb-bar button:disabled{opacity:.4}
   .lb-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom}
   .lb-scroll img{display:block;width:max(100%,900px);height:auto;margin:0 auto}
+  #installSheet{position:fixed;inset:0;z-index:120;background:rgba(10,24,30,.72);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .is-card{background:var(--surface);color:var(--ink);border-radius:20px;padding:20px;width:min(100%,420px);max-height:70vh;overflow:auto;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+  .is-card h2{margin:0;font-size:22px;text-wrap:balance}
+  .is-device{align-self:flex-start;background:#A8D8C9;color:#1d4d40;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+  .is-card ol{margin:0;padding-left:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:12px}
+  .is-card li{counter-increment:s;display:flex;gap:10px;align-items:flex-start;font-size:17px;line-height:1.4}
+  .is-card li:before{content:counter(s);flex:none;width:30px;height:30px;border-radius:50%;background:#2F7A66;color:#fff;font-weight:800;display:grid;place-items:center;font-size:15px}
+  .is-card li div{flex:1;min-width:0}
+  .is-card .ico{display:inline-block;vertical-align:-7px;margin-right:4px;color:#2F7A66}
+  .is-acts{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+  .ptr{position:fixed;z-index:130;pointer-events:none;display:flex;align-items:center;gap:6px;background:#2F7A66;color:#fff;font-weight:800;font-size:15px;padding:8px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.4);animation:ptrbob 1s ease-in-out infinite}
+  .ptr i{font-style:normal;font-size:20px}
+  .ptr.bottom{left:50%;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:translateX(-50%)}
+  .ptr.bottom-right{right:12px;bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+  .ptr.top-right{right:12px;top:calc(8px + env(safe-area-inset-top,0px))}
+  @keyframes ptrbob{0%,100%{margin-top:0}50%{margin-top:8px}}
   .heads{margin:0;padding-left:20px}
   .heads li{margin-bottom:8px;font-size:14.5px}
   footer{max-width:760px;margin:0 auto;padding:0 14px calc(36px + var(--safe-bottom));text-align:center;color:var(--muted);font-size:13px}
@@ -628,19 +644,46 @@ if (typeof module !== "undefined") module.exports = { ART, P, ESTONIA };
   if (standalone) installBtns.forEach(b=>b.remove());
   window.addEventListener("beforeinstallprompt", (e)=>{ e.preventDefault(); deferredPrompt = e; });
   window.addEventListener("appinstalled", ()=>{ installBtns.forEach(b=>b.remove()); const h=$("#installHelp"); if(h) h.hidden=true; toast("Installed! Find it on your home screen 🎉"); });
+  // Tapping Install shows the exact steps for THIS phone, and starts the install right away where the browser allows it.
+  const ua = navigator.userAgent;
+  const isIPad = /ipad/i.test(ua) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+  const isIPhone = /iphone|ipod/i.test(ua);
+  const isAndroid = /android/i.test(ua);
+  const isSamsung = /SamsungBrowser/i.test(ua);
+  const isIOSAlt = /CriOS|FxiOS|EdgiOS/i.test(ua);
+  const SHARE_ICON = '<svg class="ico" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 15V3m0 0L8 7m4-4 4 4M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+  const PLUS_ICON = '<svg class="ico" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  function copyLink(){ const u=location.href.split("#")[0]; (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast("Link copied ✓")).catch(()=>toast(u)); }
+  function installPlan(){
+    if (inApp) return { device:"Inside another app", title:"Open this in your phone's browser first", point:null, copy:true,
+      steps:["Tap the <b>⋯</b> or <b>Share</b> icon in the corner of this screen.","Choose <b>Open in Safari</b> (iPhone) or <b>Open in Chrome</b> (Android).","Tap <b>Install app on my phone</b> again."] };
+    if (isIPhone && !isIOSAlt) return { device:"iPhone · Safari", title:"Add it to your Home Screen", point:"bottom", pointText:"1. Tap Share here",
+      steps:[SHARE_ICON+" Tap the <b>Share</b> button at the bottom middle of the screen (square with an arrow).", PLUS_ICON+" Scroll down and tap <b>Add to Home Screen</b>.","Tap <b>Add</b> in the top right. Done: the app is on your home screen."] };
+    if (isIPhone || isIPad) return { device:(isIPad?"iPad":"iPhone")+" · "+(isIOSAlt?"this browser":"Safari"), title:"Add it to your Home Screen", point:"top-right", pointText:"1. Tap Share here",
+      steps:[SHARE_ICON+" Tap the <b>Share</b> button (square with an arrow) at the top right"+(isIOSAlt?", next to the address bar":"")+".", PLUS_ICON+" Scroll down and tap <b>Add to Home Screen</b>.","Tap <b>Add</b>. Tip: Safari is the most reliable browser for this."] };
+    if (isAndroid && isSamsung) return { device:"Android · Samsung Internet", title:"Install the app", point:"bottom-right", pointText:"1. Tap the menu here",
+      steps:["Tap the <b>≡ menu</b> at the bottom right.","Tap <b>Add page to</b>, then <b>Home screen</b>.","Tap <b>Add</b>. Done."] };
+    if (isAndroid) return { device:"Android · Chrome", title:"Install the app", point:"top-right", pointText:"1. Tap the menu here",
+      steps:["Tap the <b>⋮ menu</b> at the top right of Chrome.","Tap <b>Install app</b> (or <b>Add to Home screen</b>).","Tap <b>Install</b>. Done. Not using Chrome? Open this page in Chrome first."] };
+    return { device:"Computer", title:"Open this on your phone", point:null, copy:true,
+      steps:["Tap <b>Copy link</b> below and send it to your phone.","Open it in <b>Safari</b> (iPhone) or <b>Chrome</b> (Android).","Tap <b>Install app on my phone</b> there."] };
+  }
+  function closeInstall(){ const s=$("#installSheet"); if(s) s.remove(); const p=$("#installPointer"); if(p) p.remove(); }
+  function showInstall(){
+    closeInstall();
+    const p=installPlan();
+    const wrap=document.createElement("div"); wrap.id="installSheet"; wrap.setAttribute("role","dialog"); wrap.setAttribute("aria-modal","true"); wrap.setAttribute("aria-label",p.title);
+    wrap.innerHTML='<div class="is-card"><span class="is-device">'+p.device+'</span><h2>'+p.title+'</h2><ol>'+p.steps.map(s=>'<li><div>'+s+'</div></li>').join("")+'</ol><div class="is-acts">'+(p.copy?'<button class="btn" type="button" data-is="copy">Copy link</button>':'')+'<button class="btn primary" type="button" data-is="close">Got it</button></div></div>';
+    document.body.appendChild(wrap);
+    wrap.addEventListener("click",e=>{ const a=e.target.closest("[data-is]"); if(a&&a.dataset.is==="copy") copyLink(); if(a&&a.dataset.is==="close"||e.target===wrap) closeInstall(); });
+    if (p.point){ const ptr=document.createElement("div"); ptr.id="installPointer"; ptr.className="ptr "+p.point; ptr.innerHTML='<span>'+p.pointText+'</span><i aria-hidden="true">'+(p.point==="bottom"||p.point==="bottom-right"?"⬇":"⬆")+'</i>'; document.body.appendChild(ptr); }
+  }
   installBtns.forEach(b=>b.addEventListener("click", async ()=>{
-    if (deferredPrompt){ deferredPrompt.prompt(); try{ await deferredPrompt.userChoice; }catch(e){} deferredPrompt = null; return; }
-    const h = $("#installHelp");
-    if (inApp){
-      h.innerHTML = "<b>Open this page in your phone's browser first.</b><ol><li>Tap the <b>⋯</b> or <b>Share</b> icon in the corner.</li><li>Choose <b>Open in Safari</b> (iPhone) or <b>Open in Chrome</b> (Android).</li><li>Then tap <b>Install app on my phone</b> again.</li></ol><button class=\"btn\" type=\"button\" id=\"copyLink\">Copy link</button>";
-      h.hidden = false; h.scrollIntoView({behavior:"smooth",block:"center"});
-      const cl=$("#copyLink"); if(cl) cl.addEventListener("click",()=>{ (navigator.clipboard?navigator.clipboard.writeText(location.href.split("#")[0]):Promise.reject()).then(()=>toast("Link copied ✓")).catch(()=>toast(location.href.split("#")[0])); });
-      return;
+    if (deferredPrompt){
+      const dp=deferredPrompt; deferredPrompt=null;
+      try{ dp.prompt(); const r=await dp.userChoice; if(r&&r.outcome==="accepted"){ toast("Installing… 🎉"); return; } }catch(e){}
     }
-    h.innerHTML = isIOS
-      ? "<b>On iPhone:</b><ol><li>Tap the <b>Share</b> button (square with an arrow) at the bottom of Safari.</li><li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li></ol>"
-      : "<b>On Android:</b><ol><li>Tap the <b>⋮ menu</b> in Chrome (top right).</li><li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap <b>Install</b>.</li></ol><p>Not using Chrome? Open this page in Chrome first.</p>";
-    h.hidden = false; h.scrollIntoView({behavior:"smooth",block:"center"});
+    showInstall();
   }));
   if ("serviceWorker" in navigator && location.protocol.indexOf("http")===0) navigator.serviceWorker.register("sw.js").catch(()=>{});
 
