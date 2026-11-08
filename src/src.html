@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Desert→Divide">
-<meta name="description" content="Mari's Colorado hot springs tour guide: Colorado Springs → Buena Vista → Gunnison → Ouray → Salida → Woodland Park.">
+<meta name="description" content="Mari's Colorado hot springs tour guide: Colorado Springs → Buena Vista → Steamboat Springs → Woodland Park.">
 <title>Desert to Divide · Mari's Road Trip</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏜️</text></svg>">
 <style>
@@ -220,7 +220,7 @@
   <div class="hero-inner">
     <span class="eyebrow"><img alt="" src="data:image/svg+xml,__FLAG__"> Mari's road trip · Nov 8–11</span>
     <h1>Desert <em>to</em> Divide</h1>
-    <p class="lede">Colorado Springs → Buena Vista → Gunnison → Ouray → Salida → Woodland Park. Four days and five hot springs, routed around the flooded roads.</p>
+    <p class="lede">Colorado Springs → Buena Vista → Steamboat Springs (2 nights) → Woodland Park. Four days, Strawberry Park Hot Springs, and a turkey button.</p>
     <div class="countdown" id="count" aria-live="off"></div>
     <div class="countlabel" id="countlabel"></div>
     <button class="btn primary installBtn" type="button" style="--day:#A8D8C9;margin-top:14px">📲 Install app on my phone</button>
@@ -253,7 +253,7 @@
     get(k,d){ try{ const v=localStorage.getItem("d2d2-"+k); return v===null?d:JSON.parse(v);}catch(e){ return d; } },
     set(k,v){ try{ localStorage.setItem("d2d2-"+k, JSON.stringify(v)); }catch(e){} }
   };
-  let done = store.get("done_co",{}), packed = store.get("packed_co",{}), gobbles = store.get("gobbles",0);
+  let done = store.get("done_sb",{}), packed = store.get("packed_sb",{}), gobbles = store.get("gobbles",0);
   const kindIcon = {hike:"🥾",soak:"♨️",fun:"✨",food:"🍽️",drive:"🚗",home:"🏁"};
 
   // ----- Splash: waving Estonian flag for 2 seconds -----
@@ -513,8 +513,8 @@
     m.querySelectorAll("[data-slide]").forEach(b=>b.addEventListener("click",()=>openSlide(+b.dataset.slide)));
     m.setAttribute("aria-labelledby","tab-"+id);
     m.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go,true)));
-    m.querySelectorAll(".check").forEach(b=>b.addEventListener("click",()=>{ done[b.dataset.k]=!done[b.dataset.k]; store.set("done_co",done); const y=scrollY; show(id); scrollTo(0,y); if(done[b.dataset.k]) toast("Nice! ✓"); }));
-    m.querySelectorAll("[data-p]").forEach(b=>b.addEventListener("change",()=>{ packed[b.dataset.p]=b.checked; store.set("packed_co",packed); }));
+    m.querySelectorAll(".check").forEach(b=>b.addEventListener("click",()=>{ done[b.dataset.k]=!done[b.dataset.k]; store.set("done_sb",done); const y=scrollY; show(id); scrollTo(0,y); if(done[b.dataset.k]) toast("Nice! ✓"); }));
+    m.querySelectorAll("[data-p]").forEach(b=>b.addEventListener("change",()=>{ packed[b.dataset.p]=b.checked; store.set("packed_sb",packed); }));
     m.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",()=>{ const t=b.dataset.copy; (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Copied ✓")).catch(()=>toast(t)); }));
     const g=$("#gob"); if(g) g.addEventListener("click",()=>gobble(g));
     try{ history.replaceState(null,"","#"+id); }catch(e){}

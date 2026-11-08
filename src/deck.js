@@ -82,9 +82,9 @@ async function icon(Comp, color, size = 256) {
   s.addImage({ path: IMG("estonia"), x: 0.95, y: 1.1, w: 0.42, h: 0.27, objectName: "Estonian flag", altText: "Estonian flag" });
   text(s, "FOR MARI  ·  NOV 8–11, 2026", { x: 1.5, y: 1.08, w: 4.3, h: 0.3, fontSize: 12, bold: true, color: INK.tue, charSpacing: 3, valign: "middle" });
   s.addText("Desert to Divide", { placeholder: "title" });
-  s.addText("Colorado Springs → Buena Vista → Gunnison → Ouray → Salida → Woodland Park", { placeholder: "body" });
-  text(s, "Four days · five hot springs · routed around the flooded roads", { x: 0.95, y: 4.15, w: 5, h: 0.35, fontSize: 13, italic: true, color: INK.mon });
-  s.addNotes("Tere, Mari! Four days, five hot springs, and a route that avoids the flooded roads around Pagosa Springs and Durango. The interactive app has a countdown, check-offs, map buttons and the gobble button.");
+  s.addText("Colorado Springs → Buena Vista → Steamboat Springs (2 nights) → Woodland Park", { placeholder: "body" });
+  text(s, "Four days · three hot springs · two nights in Steamboat", { x: 0.95, y: 4.15, w: 5, h: 0.35, fontSize: 13, italic: true, color: INK.mon });
+  s.addNotes("Tere, Mari! Four days, three hot springs including Strawberry Park, and two nights in Steamboat Springs. The interactive app has a countdown, check-offs, map buttons and the gobble button.");
 
   // ---------- 2. At a glance ----------
   s = pres.addSlide({ masterName: "Title Only", sectionTitle: "Welcome" });
@@ -110,9 +110,9 @@ async function icon(Comp, color, size = 256) {
   s.addText("The route", { placeholder: "title" });
   const nodes = [
     ["Colorado Springs", "Land + rental car", "sun"], ["Woodland Park", "Dinner + gobble", "sun"], ["Cottonwood", "Starlit soak · Sleep", "sun"],
-    ["Mt Princeton", "Chalk Creek soak", "mon"], ["Monarch Pass", "Continental Divide", "mon"], ["Ouray", "Pool at dusk · Sleep", "mon"],
-    ["Orvis, Ridgway", "Morning soak", "tue"], ["Blue Mesa", "US-50 to Gunnison", "tue"], ["Salida", "Sunset soak · Sleep", "tue"],
-    ["Salida", "Bonus sunrise soak", "wed"], ["Wilkerson Pass", "Pikes Peak view", "wed"], ["Charis Bible College", "Finish by 2 PM", "wed"],
+    ["Fremont Pass", "Leadville · Frisco", "mon"], ["Rabbit Ears Pass", "Kremmling · US-40", "mon"], ["Steamboat", "Strawberry soak · Sleep", "mon"],
+    ["Fish Creek Falls", "Morning waterfall", "tue"], ["Old Town Springs", "In-town soak", "tue"], ["Steamboat", "Strawberry again · Sleep", "tue"],
+    ["Kremmling", "Gas · US-40", "wed"], ["Hoosier Pass", "Continental Divide", "wed"], ["Charis Bible College", "Finish by 2 PM", "wed"],
   ];
   const lineHex = { sun: "F7B89A", mon: "F2A7B8", tue: "C3B1E1", wed: "A8D8C9" };
   const pos = (i) => { const r = Math.floor(i / 4), c = i % 4; const col = r % 2 === 0 ? c : 3 - c; return { x: 0.9 + col * 2.35, y: 1.25 + r * 1.3 }; };
@@ -136,9 +136,9 @@ async function icon(Comp, color, size = 256) {
   const kindIcon = { hike: I.hike, soak: I.soak, fun: I.fun, food: I.food, drive: I.drive, home: I.home };
   const highlights = {
     sun: ["Dinner in Woodland Park (and the turkey noise)", "Night drive over Wilkerson Pass", "Cottonwood Hot Springs under the new moon"],
-    mon: ["Mt Princeton under the Chalk Cliffs", "Monarch Pass: the Continental Divide", "Ouray Hot Springs Pool at dusk"],
-    tue: ["Orvis Hot Springs, Ridgway", "US-50 over Blue Mesa", "Sunset soak in Salida"],
-    wed: ["A bonus sunrise soak in Salida", "South Park and Wilkerson Pass", "Finish at Charis Bible College by 2 PM"],
+    mon: ["Fremont Pass and Rabbit Ears Pass", "Arrive in Steamboat by 3 PM", "Strawberry Park Hot Springs at dusk"],
+    tue: ["Fish Creek Falls", "Old Town Hot Springs", "Strawberry Park, round two (optional)"],
+    wed: ["Hoosier Pass at 11,539 ft", "South Park and Wilkerson Pass", "Finish at Charis Bible College by 2 PM"],
   };
   function divider(d) {
     const sl = pres.addSlide({ masterName: "Day Divider", sectionTitle: "Day by day" });
@@ -210,7 +210,7 @@ async function icon(Comp, color, size = 256) {
   circleIcon(s, 6.5, 1.37, 0.45, C.background1, I.home, "Deadline");
   text(s, "Hard deadline", { x: 7.05, y: 1.42, w: 2.3, h: 0.35, fontFace: THEME.headFontFace, fontSize: 18, bold: true, valign: "middle" });
   text(s, "2:00 PM", { x: 6.5, y: 2.05, w: 2.85, h: 0.75, fontFace: THEME.headFontFace, fontSize: 44, bold: true });
-  text(s, "Charis Bible College, Woodland Park. Leave Salida by 9:45 AM to arrive around 12:45 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
+  text(s, "Charis Bible College, Woodland Park. Leave Steamboat by 7:00 AM to arrive around 12:55 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
   text(s, "Lunch: something quick in Woodland Park.",{ x: 6.5, y: 4.1, w: 2.85, h: 0.7, fontSize: 12, italic: true });
 
   // ---------- Hikes ----------
@@ -235,13 +235,13 @@ async function icon(Comp, color, size = 256) {
   s.addText("Quirky, out-of-the-way stops", { placeholder: "title" });
   const quirky = [
     ["sun", "Wilkerson Pass", "A night crossing at 9,507 ft into South Park."],
-    ["mon", "Chalk Cliffs", "White cliffs above Mt Princeton's creekside pools."],
-    ["mon", "Monarch Pass", "Continental Divide selfie at 11,312 ft."],
-    ["mon", "Black Canyon rim", "A 2,000-ft drop, 2 minutes from the car."],
-    ["tue", "Orvis, Ridgway", "A quiet, old-school spring under the snowy San Juans."],
-    ["tue", "Blue Mesa", "Dillon Pinnacles and mirror-still water."],
-    ["tue", "Salida sunset", "A soak while the Collegiates turn pink."],
-    ["wed", "South Park", "A huge empty basin with elk and pronghorn."],
+    ["mon", "Leadville", "The highest city in the US, at 10,152 ft."],
+    ["mon", "Rabbit Ears Pass", "The famous rock formation on the ridgeline."],
+    ["mon", "Strawberry Park", "Natural rock pools by the creek, after dark."],
+    ["tue", "Fish Creek Falls", "A 280-ft waterfall, with ice in November."],
+    ["tue", "Yampa River Trail", "A flat riverside stroll through town."],
+    ["tue", "Old Town Springs", "Hot pools right on Lincoln Avenue."],
+    ["wed", "Hoosier Pass", "Continental Divide selfie at 11,539 ft."],
   ];
   quirky.forEach(([d, h, sub], i) => {
     const x = 0.5 + (i % 4) * 2.27, y = 1.15 + Math.floor(i / 4) * 2.0;
