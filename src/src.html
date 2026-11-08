@@ -340,7 +340,7 @@
     }).join("");
     const food=`<div class="section-title">Where to eat</div><div class="card">${d.food.map(f=>`
       <div class="meal"><div class="m">${esc(f.meal)}</div><div class="o"><div><i>A</i><span>${esc(f.a)}</span></div><div><i>B</i><span>${esc(f.b)}</span></div></div></div>`).join("")}</div>`;
-    const crowd=d.crowd?`<div class="section-title">Dodging the crowds</div><div class="card"><ul class="heads">${d.crowd.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:"";
+    const crowd=[["November magic",d.shine],["Car, parking & shuttles",d.car],["Dodging the crowds",d.crowd]].filter(x=>x[1]).map(([h,l])=>`<div class="section-title">${h}</div><div class="card"><ul class="heads">${l.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`).join("");
     const sleep=d.sleep?`<div class="section-title">Where to sleep · ${esc(d.sleep.town)}</div><div class="card">
       <p class="note">All three showed as available for 1 guest on Nov 7. Tap Copy, then paste the name into Airbnb search.</p>
       ${d.sleep.picks.map(p=>`<div class="bnb"><div class="n">“${esc(p.name)}”<small>${esc(p.note)}</small></div><button class="btn" type="button" data-copy="${esc(p.name)}">Copy</button></div>`).join("")}

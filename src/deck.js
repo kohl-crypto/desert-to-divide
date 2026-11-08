@@ -109,9 +109,9 @@ async function icon(Comp, color, size = 256) {
   s = pres.addSlide({ masterName: "Title Only", sectionTitle: "Welcome" });
   s.addText("The route", { placeholder: "title" });
   const nodes = [
-    ["Phoenix", "Land + rental car", "sun"], ["Buc-ee's", "Brisket. Gobble.", "sun"], ["Grand Canyon", "Arrive ~10:30 PM", "sun"],
-    ["Grand Canyon", "Sunrise hike", "mon"], ["Monument Valley", "Valley Drive", "mon"], ["Moab", "Sleep", "mon"],
-    ["Arches", "Delicate Arch sunrise", "tue"], ["Telluride", "Lunch", "tue"], ["Ouray", "Bear Creek Falls · Sleep", "tue"],
+    ["Phoenix", "Land + rental car", "sun"], ["Buc-ee's", "Brisket. Gobble.", "sun"], ["Grand Canyon", "Arrive ~11 PM", "sun"],
+    ["Grand Canyon", "Sunrise hike", "mon"], ["Monument Valley", "Wildcat Trail", "mon"], ["Moab", "Sleep", "mon"],
+    ["Arches", "Delicate Arch sunrise", "tue"], ["Telluride", "Lunch", "tue"], ["Ouray", "Snowy peaks · Sleep", "tue"],
     ["Black Canyon", "Oak Flat Loop", "wed"], ["Monarch Pass", "Continental Divide", "wed"], ["Woodland Park", "Home by 2 PM", "wed"],
   ];
   const lineHex = { sun: "F7B89A", mon: "F2A7B8", tue: "C3B1E1", wed: "A8D8C9" };
@@ -136,8 +136,8 @@ async function icon(Comp, color, size = 256) {
   const kindIcon = { hike: I.hike, fun: I.fun, food: I.food, drive: I.drive, home: I.home };
   const highlights = {
     sun: ["Buc-ee's brisket (and the turkey noise)", "Flagstaff gas + coffee", "Night run to Tusayan"],
-    mon: ["Sunrise hike below the Grand Canyon rim", "Monument Valley Valley Drive", "Forrest Gump Point at golden hour"],
-    tue: ["Delicate Arch at sunrise", "Hole N\" The Rock oddities", "Million Dollar Highway + hot springs"],
+    mon: ["Sunrise hike below the Grand Canyon rim", "Wildcat Trail around the Mittens", "Forrest Gump Point at golden hour"],
+    tue: ["Delicate Arch at sunrise", "Hole N\" The Rock oddities", "Snowy Dallas Divide + hot springs"],
     wed: ["Black Canyon's Oak Flat Loop", "Continental Divide at Monarch Pass", "Home in Woodland Park by 2 PM"],
   };
   function divider(d) {
@@ -199,7 +199,7 @@ async function icon(Comp, color, size = 256) {
     text(s, h, { x: x + 0.78, y: y + 0.14, w: 1.9, h: 0.3, fontSize: 13, bold: true, fit: "shrink" });
     text(s, sub, { x: x + 0.78, y: y + 0.45, w: 1.9, h: 0.35, fontSize: 11, color: C.accent6 });
   });
-  text(s, "1001 N Bullard Ave, Goodyear, AZ · ~25 min west of PHX", { x: 0.5, y: 4.95, w: 5.8, h: 0.3, fontSize: 11, color: C.accent6 });
+  text(s, "1001 N Bullard Ave, Goodyear, AZ · ~40 min west of Sky Harbor", { x: 0.5, y: 4.95, w: 5.8, h: 0.3, fontSize: 11, color: C.accent6 });
   s.addNotes("Commit to the turkey noise. Loud. Non-negotiable.");
 
   divider(T.days[1]); timeline(T.days[1]);
@@ -210,7 +210,7 @@ async function icon(Comp, color, size = 256) {
   circleIcon(s, 6.5, 1.37, 0.45, C.background1, I.home, "Deadline");
   text(s, "Hard deadline", { x: 7.05, y: 1.42, w: 2.3, h: 0.35, fontFace: THEME.headFontFace, fontSize: 18, bold: true, valign: "middle" });
   text(s, "2:00 PM", { x: 6.5, y: 2.05, w: 2.85, h: 0.75, fontFace: THEME.headFontFace, fontSize: 44, bold: true });
-  text(s, "Woodland Park, CO. Leave Black Canyon by 8:30 AM to arrive around 1:15 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
+  text(s, "Woodland Park, CO. Leave Black Canyon by 8:15 AM to arrive around 1:00 PM.", { x: 6.5, y: 2.9, w: 2.85, h: 1.0, fontSize: 13 });
   text(s, "Lunch: leftover Buc-ee's jerky and Beaver Nuggets.", { x: 6.5, y: 4.1, w: 2.85, h: 0.7, fontSize: 12, italic: true });
 
   // ---------- Hikes ----------
@@ -240,7 +240,7 @@ async function icon(Comp, color, size = 256) {
     ["mon", "Cameron Trading Post", "A 1916 trading post and Navajo tacos."],
     ["tue", "Hole N\" The Rock", "14-room house blasted into a cliff, plus a camel."],
     ["tue", "Wilson Arch", "A giant arch right next to the highway."],
-    ["tue", "Bear Creek Falls", "A waterfall right under a highway bridge."],
+    ["tue", "Dallas Divide", "Snowy Sneffels peaks at golden hour."],
     ["wed", "Monarch Pass", "Continental Divide selfie at 11,312 ft."],
   ];
   quirky.forEach(([d, h, sub], i) => {
