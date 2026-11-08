@@ -158,8 +158,8 @@ async function icon(Comp, color, size = 256) {
   function timeline(d, side) {
     const sl = pres.addSlide({ masterName: "Title Only", sectionTitle: "Day by day" });
     sl.addText([{ text: `${d.day} ${d.date}  `, options: { color: INK[d.id] } }, { text: "The plan" }], { placeholder: "title" });
-    const stops = d.stops, two = stops.length > 6, perCol = two ? Math.ceil(stops.length / 2) : stops.length;
-    const rowH = two ? 0.74 : Math.min(0.66, 3.7 / stops.length);
+    const stops = d.stops, two = stops.length > 6 && !side, perCol = two ? Math.ceil(stops.length / 2) : stops.length;
+    const rowH = two ? 0.74 : Math.min(0.66, 4.1 / stops.length);
     stops.forEach((st, i) => {
       const col = two ? Math.floor(i / perCol) : 0, r = two ? i % perCol : i;
       const x = 0.5 + col * 4.6, y = 1.2 + r * rowH, w = two ? 4.4 : (side ? 5.6 : 9);

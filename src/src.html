@@ -159,6 +159,17 @@
   .check-row{display:flex;align-items:center;gap:12px;min-height:48px;border-top:1px solid var(--line);cursor:pointer;font-size:15px}
   .check-row:first-of-type{border-top:0}
   .check-row input{width:22px;height:22px;accent-color:#9C7FD6}
+  .slides{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px}
+  .slide{display:flex;flex-direction:column;gap:6px;padding:0;background:none;border:0;font:inherit;color:var(--muted);text-align:left;cursor:pointer;min-width:0}
+  .slide img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;border:1px solid var(--line);background:var(--card,#fff)}
+  .slide span{font-size:12px;font-weight:700}
+  #lightbox{position:fixed;inset:0;z-index:90;background:#0f1f26;display:flex;flex-direction:column}
+  #lightbox[hidden]{display:none}
+  .lb-bar{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:calc(10px + var(--safe-top)) 12px 10px;color:#e8f3f1}
+  .lb-bar button{background:#1d3a44;color:#e8f3f1;border:1px solid #3b6572;border-radius:999px;padding:10px 14px;font:inherit;font-size:14px;font-weight:700;min-height:44px;cursor:pointer}
+  .lb-bar button:disabled{opacity:.4}
+  .lb-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom}
+  .lb-scroll img{display:block;width:max(100%,900px);height:auto;margin:0 auto}
   .heads{margin:0;padding-left:20px}
   .heads li{margin-bottom:8px;font-size:14.5px}
   footer{max-width:760px;margin:0 auto;padding:0 14px calc(36px + var(--safe-bottom));text-align:center;color:var(--muted);font-size:13px}
@@ -247,6 +258,7 @@
   let deferredPrompt = null;
   const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+  const inApp = /FBAN|FBAV|Instagram|Line\/|MicroMessenger|Snapchat|Twitter|GSA\/|\bwv\b|; wv\)|Gmail|Outlook|Teams/i.test(navigator.userAgent);
   const installBtns = document.querySelectorAll(".installBtn");
   if (standalone) installBtns.forEach(b=>b.remove());
   window.addEventListener("beforeinstallprompt", (e)=>{ e.preventDefault(); deferredPrompt = e; });
@@ -254,9 +266,15 @@
   installBtns.forEach(b=>b.addEventListener("click", async ()=>{
     if (deferredPrompt){ deferredPrompt.prompt(); try{ await deferredPrompt.userChoice; }catch(e){} deferredPrompt = null; return; }
     const h = $("#installHelp");
+    if (inApp){
+      h.innerHTML = "<b>Open this page in your phone's browser first.</b><ol><li>Tap the <b>⋯</b> or <b>Share</b> icon in the corner.</li><li>Choose <b>Open in Safari</b> (iPhone) or <b>Open in Chrome</b> (Android).</li><li>Then tap <b>Install app on my phone</b> again.</li></ol><button class=\"btn\" type=\"button\" id=\"copyLink\">Copy link</button>";
+      h.hidden = false; h.scrollIntoView({behavior:"smooth",block:"center"});
+      const cl=$("#copyLink"); if(cl) cl.addEventListener("click",()=>{ (navigator.clipboard?navigator.clipboard.writeText(location.href.split("#")[0]):Promise.reject()).then(()=>toast("Link copied ✓")).catch(()=>toast(location.href.split("#")[0])); });
+      return;
+    }
     h.innerHTML = isIOS
       ? "<b>On iPhone:</b><ol><li>Tap the <b>Share</b> button (square with an arrow) at the bottom of Safari.</li><li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li></ol>"
-      : "<b>On Android:</b><ol><li>Tap the <b>⋮ menu</b> in Chrome.</li><li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap <b>Install</b>.</li></ol>";
+      : "<b>On Android:</b><ol><li>Tap the <b>⋮ menu</b> in Chrome (top right).</li><li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap <b>Install</b>.</li></ol><p>Not using Chrome? Open this page in Chrome first.</p>";
     h.hidden = false; h.scrollIntoView({behavior:"smooth",block:"center"});
   }));
   if ("serviceWorker" in navigator && location.protocol.indexOf("http")===0) navigator.serviceWorker.register("sw.js").catch(()=>{});
@@ -296,7 +314,7 @@
   // ----- Tabs -----
   const tabs=[{id:"home",label:"🏜️ Trip",sub:"Overview",c:"#E9E4F7"}]
     .concat(T.days.map(d=>({id:d.id,label:d.day,sub:d.date,c:"#"+d.color})))
-    .concat([{id:"pack",label:"🎒 Pack",sub:"Checklist",c:"#B8D8F0"}]);
+    .concat([{id:"guide",label:"🎞️ Guide",sub:"Slides",c:"#A8D8C9"},{id:"pack",label:"🎒 Pack",sub:"Checklist",c:"#B8D8F0"}]);
   function renderTabs(active){
     $("#tabs").innerHTML=tabs.map(t=>`<button class="tab" role="tab" id="tab-${t.id}" aria-selected="${t.id===active}" aria-controls="main" data-id="${t.id}" style="--tabc:${t.c}">${t.label}<small>${t.sub}</small></button>`).join("");
     $("#tabs").querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>show(b.dataset.id,true)));
@@ -353,6 +371,28 @@
       <div class="tl">${stops}</div>${food}${crowd}${sleep}</div>`;
   }
 
+  const SLIDE_COUNT=__SLIDES__;
+  const slideSrc=n=>"slides/slide-"+String(n).padStart(2,"0")+".jpg";
+  function guide(){
+    setTheme("#A8D8C9","#2F7A66");
+    const items=Array.from({length:SLIDE_COUNT},(_,i)=>`<button class="slide" type="button" data-slide="${i+1}" aria-label="Open slide ${i+1} of ${SLIDE_COUNT}"><img loading="lazy" decoding="async" alt="Tour guide slide ${i+1} of ${SLIDE_COUNT}" src="${slideSrc(i+1)}"><span>${i+1} / ${SLIDE_COUNT}</span></button>`).join("");
+    return `<div class="view">
+      <section class="dayhero"><div class="art" aria-hidden="true">${ART.mountains}</div><div class="txt"><span class="pill">The PowerPoint guide</span><h2>Guide slides</h2><p>Tap any slide to open it big. Pinch or scroll to read the small print.</p></div></section>
+      <div class="acts" style="margin:0 0 14px"><a class="btn primary" style="--day:#F7B0C4" href="Desert-to-Divide-Tour-Guide.pptx">⬇ Download the PowerPoint</a></div>
+      <div class="slides">${items}</div>
+    </div>`;
+  }
+  function openSlide(n){
+    let box=$("#lightbox"); if(!box){ box=document.createElement("div"); box.id="lightbox"; document.body.appendChild(box); }
+    n=Math.min(SLIDE_COUNT,Math.max(1,n));
+    box.innerHTML=`<div class="lb-bar"><button type="button" data-lb="prev" aria-label="Previous slide"${n===1?" disabled":""}>‹ Prev</button><span>${n} / ${SLIDE_COUNT}</span><button type="button" data-lb="next" aria-label="Next slide"${n===SLIDE_COUNT?" disabled":""}>Next ›</button><button type="button" data-lb="close" aria-label="Close">✕ Close</button></div><div class="lb-scroll"><img alt="Tour guide slide ${n} of ${SLIDE_COUNT}" src="${slideSrc(n)}"></div>`;
+    box.hidden=false; box.dataset.n=n;
+    box.querySelector("[data-lb=prev]").onclick=()=>openSlide(n-1);
+    box.querySelector("[data-lb=next]").onclick=()=>openSlide(n+1);
+    box.querySelector("[data-lb=close]").onclick=()=>{ box.hidden=true; };
+  }
+  document.addEventListener("keydown",e=>{ const b=$("#lightbox"); if(!b||b.hidden) return; if(e.key==="Escape") b.hidden=true; if(e.key==="ArrowRight") openSlide(+b.dataset.n+1); if(e.key==="ArrowLeft") openSlide(+b.dataset.n-1); });
+
   function pack(){
     setTheme("#B8D8F0","#2F6A92");
     return `<div class="view">
@@ -368,7 +408,8 @@
     renderTabs(id);
     const d=T.days.find(x=>x.id===id);
     const m=$("#main");
-    m.innerHTML = id==="home"?home():id==="pack"?pack():day(d);
+    m.innerHTML = id==="home"?home():id==="pack"?pack():id==="guide"?guide():day(d);
+    m.querySelectorAll("[data-slide]").forEach(b=>b.addEventListener("click",()=>openSlide(+b.dataset.slide)));
     m.setAttribute("aria-labelledby","tab-"+id);
     m.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go,true)));
     m.querySelectorAll(".check").forEach(b=>b.addEventListener("click",()=>{ done[b.dataset.k]=!done[b.dataset.k]; store.set("done",done); const y=scrollY; show(id); scrollTo(0,y); if(done[b.dataset.k]) toast("Nice! ✓"); }));

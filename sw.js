@@ -1,8 +1,11 @@
 // Caches the app shell so the guide opens with no signal (index.html already holds all art and audio).
-const CACHE = "d2d2-v1";
+const CACHE = "d2d2-v2";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
+const SLIDES = Array.from({ length: 18 }, (_, i) => "slides/slide-" + String(i + 1).padStart(2, "0") + ".jpg");
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE).then((c) => c.addAll(SHELL).then(() => Promise.allSettled(SLIDES.map((u) => c.add(u))))).then(() => self.skipWaiting())
+  );
 });
 self.addEventListener("activate", (e) => {
   e.waitUntil(
